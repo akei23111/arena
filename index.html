@@ -1327,15 +1327,6 @@ function updateUnit(u,dt){
   u.moveAmt+=((speed>.1?1:0)-u.moveAmt)*Math.min(1,dt*10); u.speedNow=speed;
   u.inBush=bushAt(u.pos.x,u.pos.z);
 }
-// push overlapping units apart; the player and heroes never get shoved around by creeps
-function separate(){
-  for(let i=0;i<units.length;i++) for(let j=i+1;j<units.length;j++){ const a=units[i], b=units[j]; if(!a.alive||!b.alive) continue;
-    if((a.dash&&a.dash.leap)||(b.dash&&b.dash.leap)) continue;
-    const dx=b.pos.x-a.pos.x, dz=b.pos.z-a.pos.z, m=a.radius+b.radius; if(Math.abs(dx)>m||Math.abs(dz)>m) continue; const d=Math.hypot(dx,dz);
-    if(d<m&&d>1e-4){
-      let wa=.5; if(a.isPlayer) wa=0; else if(b.isPlayer) wa=1; else if(a.isCreep&&!b.isCreep) wa=1; else if(!a.isCreep&&b.isCreep) wa=0;
-      const p=m-d; a.pos.x-=dx/d*p*wa; a.pos.z-=dz/d*p*wa; b.pos.x+=dx/d*p*(1-wa); b.pos.z+=dz/d*p*(1-wa); collide(a.pos,a.radius); collide(b.pos,b.radius); } }
-}
 function updateCamps(dt){
   for(const c of camps){
     if(c.creeps.some(k=>k.alive||k.removeT>0)) continue;
@@ -1604,7 +1595,7 @@ function simStep(dt){
   computeVisibility();
   for(const u of units){ if(u.isPlayer) continue; if(u.isCreep) creepThink(u,dt); else aiThink(u,dt); }
   for(const u of units) updateUnit(u,dt);
-  separate(); updateProjectiles(dt); updateFx(dt); updateCamps(dt);
+  updateProjectiles(dt); updateFx(dt); updateCamps(dt);
 }
 function update(dt){
   const n=Math.max(1,Math.ceil(dt/(1/30))), h=dt/n;
