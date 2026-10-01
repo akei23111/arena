@@ -70,18 +70,19 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 .bar.mp{height:10px}.bar.mp i{background:linear-gradient(#6fa6ff,#2e66d4)}
 .bar.xp{height:4px;border-radius:2px}.bar.xp i{background:#a58bff}
 .bar span{position:absolute;inset:0;display:grid;place-items:center;font:700 10px var(--body);text-shadow:0 1px 2px #000}
-.side{position:absolute;top:calc(8px + env(safe-area-inset-top,0px));right:calc(10px + env(safe-area-inset-right,0px));display:grid;gap:6px;justify-items:end}
-#mm{width:124px;height:124px;border-radius:8px;border:1px solid var(--line);background:#14211b;display:block}
-.feed{display:grid;gap:4px;justify-items:end;max-width:40vw}
+.side{position:absolute;top:calc(8px + env(safe-area-inset-top,0px));right:calc(10px + env(safe-area-inset-right,0px));display:flex;flex-direction:row-reverse;align-items:flex-start;gap:6px}
+#mm{flex:none;width:132px;height:132px;border-radius:8px;border:1px solid var(--line);background:#14211b;display:block}
+.feed{display:grid;gap:4px;justify-items:end;align-content:start;max-width:40vw}
+@media (max-height:440px){#mm{width:100px;height:100px}}
 .feed div{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font:500 11px var(--body);white-space:nowrap;animation:fin .25s ease-out}
 .feed .A{color:var(--ally)}.feed .E{color:var(--enemy)}.feed .P{color:var(--gold)}.feed .N{color:var(--neutral)}
 @keyframes fin{from{transform:translateX(20px);opacity:0}}
 @media (max-width:640px){.me,.side{top:calc(52px + env(safe-area-inset-top,0px))}.me{width:min(200px,50vw)}#mm{width:96px;height:96px}}
 
-#skills{position:absolute;right:calc(10px + env(safe-area-inset-right,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));width:300px;height:240px;pointer-events:none}
+#skills{position:absolute;right:env(safe-area-inset-right,0px);bottom:env(safe-area-inset-bottom,0px);width:310px;height:250px;pointer-events:none}
 .sk{position:absolute;width:60px;height:60px;border-radius:50%;padding:0;border:2px solid #0b1110;pointer-events:auto;touch-action:none;cursor:pointer;color:var(--g);
   background:radial-gradient(circle at 35% 28%,var(--c2),var(--c1) 70%);display:grid;place-items:center;
-  box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.12);transition:scale .08s}
+  box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.12);transition:scale .16s ease-out,box-shadow .16s ease-out}
 .sk svg{width:50%;height:50%;filter:drop-shadow(0 1px 1px rgba(0,0,0,.6))}
 .sk .cd{position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(3,7,7,.8) calc(var(--p,0) * 1turn),transparent 0)}
 .sk .n{position:absolute;inset:0;display:grid;place-items:center;font:20px var(--display);color:#fff;text-shadow:0 2px 3px #000}
@@ -90,23 +91,29 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 .sk.ult{width:70px;height:70px;border-color:#7a5a12;box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(243,193,75,.55),0 0 18px -4px rgba(243,193,75,.5)}
 .sk.item{width:46px;height:46px}
 .sk.nomana{filter:saturate(.25) brightness(.8)}.sk.nomana .mc{background:#7a1b25}
-.sk.off,.apad.off{filter:grayscale(1) brightness(.6)}
-.sk.aim{scale:1.1;box-shadow:0 0 0 3px var(--gold)}
+.sk.off,.apad.off,.amini.off{filter:grayscale(1) brightness(.6)}
+.sk.aim{scale:1.06;box-shadow:0 0 0 3px var(--gold),0 0 20px 5px var(--g)}
 .sk.flash{animation:flash .5s}
-.sk.deny{animation:shake .28s}
+.sk.deny{animation:denyf .32s}
 @keyframes flash{0%{box-shadow:0 0 0 0 rgba(255,255,255,.9)}100%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}
-@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-/* attack pad: same shape as the move joystick, warm red colour */
-.apad{position:absolute;width:112px;height:112px;border-radius:50%;pointer-events:auto;touch-action:none;cursor:pointer;
-  border:2px solid rgba(255,128,92,.6);background:radial-gradient(circle,rgba(150,36,16,.22),rgba(70,12,6,.5));box-shadow:0 0 18px -6px rgba(255,90,50,.6)}
-.apad .cd{position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(rgba(255,196,150,.85) calc(var(--p,0) * 1turn),transparent 0);
-  -webkit-mask:radial-gradient(circle,transparent 51px,#000 52px);mask:radial-gradient(circle,transparent 51px,#000 52px)}
-.apad .kn{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;display:grid;place-items:center;color:#fff3ea;
-  background:radial-gradient(circle at 35% 30%,#ffb595,#e0502e 55%,#8a2412);box-shadow:0 2px 6px rgba(0,0,0,.55),inset 0 0 0 2px rgba(255,255,255,.18)}
-.apad .kn svg{width:26px;height:26px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.6))}
-.apad.aim{border-color:#ffd27a}
-.apad .k{position:absolute;top:-4px;left:6px;font:11px var(--display);font-style:normal;color:#fff;background:#000c;border-radius:4px;padding:1px 4px}
-#cancel{position:absolute;right:calc(26px + env(safe-area-inset-right,0px));bottom:calc(262px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:rgba(40,8,12,.75);border:2px solid #6b2430;color:#ff8b98;font:11px var(--display);text-transform:uppercase}
+@keyframes denyf{0%{box-shadow:0 0 0 4px #ff5468}100%{box-shadow:0 0 0 4px rgba(255,84,104,0)}}
+/* attack: a quarter-circle sector pressed into the bottom-right corner (square towards the corner, round towards the thumb) */
+.apad{position:absolute;right:0;bottom:0;width:118px;height:118px;border-radius:100% 0 0 0;overflow:hidden;pointer-events:auto;touch-action:none;cursor:pointer;
+  border:solid rgba(255,170,130,.85);border-width:2px 0 0 2px;background:radial-gradient(circle at 100% 100%,#ffa477 0,#e0502e 48%,#8a2412 100%);
+  box-shadow:0 0 22px -6px rgba(255,90,50,.75),inset 0 0 0 2px rgba(255,255,255,.14);transform-origin:100% 100%;transition:scale .16s ease-out,filter .16s ease-out}
+.apad svg{position:absolute;right:24px;bottom:24px;width:46px;height:46px;color:#fff3ea;filter:drop-shadow(0 2px 2px rgba(0,0,0,.55))}
+.apad .cd{position:absolute;inset:0;background:conic-gradient(from 270deg at 100% 100%,rgba(20,4,2,.5) calc(var(--p,0) * 90deg),transparent 0)}
+.apad.aim{scale:1.04;filter:brightness(1.22)}
+.apad .k{position:absolute;right:8px;bottom:8px;font:11px var(--display);font-style:normal;color:#fff;background:#000c;border-radius:4px;padding:1px 4px}
+/* two small attack buttons: structures only (above the sector) and creeps only (beside it) */
+.amini{position:absolute;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;pointer-events:auto;touch-action:none;cursor:pointer;border:2px solid #0b1110;
+  box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.16);transition:scale .16s ease-out,box-shadow .16s ease-out}
+.amini svg{width:27px;height:27px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
+.amini.build{background:linear-gradient(#f6d47c,#b9822a);color:#3a2606}
+.amini.creep{background:linear-gradient(#9be276,#3f8a3a);color:#0f2a10}
+.amini.aim{scale:1.06;box-shadow:0 0 0 3px #fff,0 0 18px 3px rgba(255,255,255,.65)}
+.amini .k{position:absolute;top:-6px;left:-6px;font:11px var(--display);font-style:normal;color:#fff;background:#000c;border-radius:4px;padding:1px 4px}
+#cancel{position:absolute;right:calc(250px + env(safe-area-inset-right,0px));bottom:calc(140px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:rgba(40,8,12,.75);border:2px solid #6b2430;color:#ff8b98;font:11px var(--display);text-transform:uppercase}
 #cancel.hot{background:#b3263a;color:#fff;border-color:#ff8b98}
 #stick{position:absolute;left:0;top:0;width:116px;height:116px;margin:-58px 0 0 -58px;border-radius:50%;border:2px solid rgba(255,255,255,.25);background:rgba(10,20,18,.35);opacity:.45;transition:opacity .15s}
 #stick.on{opacity:1}
@@ -171,13 +178,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 .btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .btn.ghost{background:transparent;color:var(--fg);box-shadow:none;border:1px solid var(--line)}
 .err{color:#ff8b98;font-size:13px;margin:0}
-.tog{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel-solid);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px}
-.tog span{color:var(--muted);display:block;font-size:11.5px}
-.sw{flex:none;width:52px;height:30px;border-radius:15px;border:1px solid var(--line);background:#1a2725;position:relative;cursor:pointer;padding:0}
-.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#7d948c;transition:transform .15s}
-.sw[aria-checked="true"]{background:#3d6b1f;border-color:#6aa83a}
-.sw[aria-checked="true"]::after{transform:translateX(22px);background:#c9ff9c}
-.sw:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
 @media (max-height:440px) and (min-aspect-ratio:1/1){
   .lobby{gap:8px 12px}.tile{padding:6px}.tile .emb{width:36px;height:36px}.panel{padding:10px 12px;gap:8px}
   .btn{padding:11px 30px;font-size:16px}.dh .emb{width:44px;height:44px}.dh b{font-size:17px}
@@ -223,7 +224,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
   <div id="skills"></div>
   <div id="cancel" hidden>Отмена</div>
   <div id="death" hidden></div>
-  <div id="hint" hidden>Клик по земле — идти · Пробел/A — атака · Q W E R — зажми, наведи, отпусти · F — флакон · Esc — пауза</div>
+  <div id="hint" hidden>Клик по земле — идти · Пробел/A — атака · X — строения · C — крипы · Q W E R — зажми, наведи, отпусти · F — флакон · Esc — пауза</div>
 </div>
 
 <div id="menu" class="ov">
@@ -237,7 +238,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
     <section class="lb-detail panel" id="detail" aria-live="polite"></section>
     <footer class="lb-go">
       <p class="err" id="err" hidden>Не загрузился 3D-движок. Проверь интернет и обнови страницу.</p>
-      <div class="tog"><div>Автоатака<span>Герой сам бьёт врагов рядом</span></div><button class="sw" id="autoSwM" role="switch" aria-checked="false" aria-label="Автоатака"></button></div>
+
       <button class="btn" id="start">В бой</button>
     </footer>
   </div>
@@ -253,7 +254,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 <div id="info" class="ov" hidden>
   <div class="wrap">
     <div id="infoCard" class="panel"></div>
-    <div class="tog"><div>Автоатака<span>Герой сам бьёт ближайшего врага в радиусе. Кнопка атаки работает в любом режиме.</span></div><button class="sw" id="autoSw" role="switch" aria-checked="false" aria-label="Автоатака"></button></div>
+
     <div class="row"><button class="btn" id="resume">Продолжить</button><button class="btn ghost" id="quit">Выйти в меню</button></div>
   </div>
 </div>
@@ -313,11 +314,11 @@ const HEROES = {
       {type:'inferno',name:'Огненный смерч',radius:3.2,dmg:45,dur:5,cd:65,mana:150,ult:true,desc:'Крутится в пламени и обжигает всех рядом'}]}
 };
 const CREEPS = {
-  small:{name:'Мшистый волк',hp:300,mana:0,speed:4.8,radius:.58,atk:{dmg:22,range:1.6,cd:1.1,ranged:false},xp:45,color:0x6b5a3e,accent:0x4f7a3a,glow:0xffb347,model:'beast',abilities:[]},
+  small:{name:'Мшистый волк',hp:300,mana:0,speed:4.8,radius:.58,atk:{dmg:15,range:1.6,cd:1.1,ranged:false},xp:45,color:0x6b5a3e,accent:0x4f7a3a,glow:0xffb347,model:'beast',abilities:[]},
   harpy:{name:'Грозовая гарпия',hp:360,mana:0,speed:5,radius:.58,atk:{dmg:28,range:4.5,cd:1.2,ranged:true},xp:60,color:0x6a5a8a,accent:0x9a86c8,glow:0x9fe8ff,model:'harpy',abilities:[]},
-  big:{name:'Тролль-шаман',hp:620,mana:0,speed:4.4,radius:.68,atk:{dmg:36,range:4.5,cd:1.35,ranged:true},xp:90,color:0x5d7350,accent:0x8a5a2a,glow:0xff9a3c,model:'troll',abilities:[]},
-  beetle:{name:'Панцирный жук',hp:820,mana:0,speed:4.2,radius:.8,armor:.25,atk:{dmg:40,range:1.9,cd:1.4,ranged:false},xp:110,color:0x3a6a6a,accent:0xd8c27a,glow:0x7dffd0,model:'beetle',abilities:[]},
-  ancient:{name:'Древний',hp:1600,mana:0,speed:4.2,radius:1.15,atk:{dmg:72,range:2.6,cd:1.5,ranged:false},xp:240,color:0x34405e,accent:0x8fa6ff,glow:0x8fa6ff,model:'ancient',abilities:[]},
+  big:{name:'Тролль-шаман',hp:620,mana:0,speed:4.4,radius:.68,atk:{dmg:26,range:4.5,cd:1.35,ranged:true},xp:90,color:0x5d7350,accent:0x8a5a2a,glow:0xff9a3c,model:'troll',abilities:[]},
+  beetle:{name:'Панцирный жук',hp:820,mana:0,speed:4.2,radius:.8,armor:.25,atk:{dmg:29,range:1.9,cd:1.4,ranged:false},xp:110,color:0x3a6a6a,accent:0xd8c27a,glow:0x7dffd0,model:'beetle',abilities:[]},
+  ancient:{name:'Древний',hp:1600,mana:0,speed:4.2,radius:1.15,atk:{dmg:52,range:2.6,cd:1.5,ranged:false},xp:240,color:0x34405e,accent:0x8fa6ff,glow:0x8fa6ff,model:'ancient',abilities:[]},
   boss:{name:'Глыбозуб',hp:5200,mana:0,speed:4,radius:1.9,armor:.2,atk:{dmg:120,range:3.2,cd:1.6,ranged:false},xp:0,color:0x5a4a3e,accent:0x7a4ac8,glow:0xc79bff,model:'boss',scale:1.4,abilities:[]}
 };
 const LANE_CREEP = {
@@ -393,8 +394,7 @@ const svg = t => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[t]}</svg>`;
 
 /* ================= LOBBY ================= */
 let chosen = 'warden';
-let autoAtk=false;
-try{ autoAtk = localStorage.getItem('arena.autoAtk')==='1'; }catch(_){}
+
 const heroStyle = h => `--c1:${h.css[0]};--c2:${h.css[1]};--g:${h.css[2]}`;
 function detailHTML(h,mul=1,atkMul=1,lvl=0,maxHp=0,maxMana=0){
   const st=heroStyle(h), dps=h.atk.dmg*atkMul/h.atk.cd;
@@ -406,8 +406,7 @@ function detailHTML(h,mul=1,atkMul=1,lvl=0,maxHp=0,maxMana=0){
 }
 function clamp01(v){ return v<0?0:v>1?1:v; }
 function renderDetail(){ $('detail').innerHTML=detailHTML(HEROES[chosen]); }
-function syncAutoSw(){ $('autoSw').setAttribute('aria-checked',autoAtk); $('autoSwM').setAttribute('aria-checked',autoAtk); }
-function toggleAuto(){ autoAtk=!autoAtk; syncAutoSw(); try{ localStorage.setItem('arena.autoAtk',autoAtk?'1':'0'); }catch(_){} }
+
 function buildMenu(){
   const box=$('heroes');
   for (const [id,h] of Object.entries(HEROES)){
@@ -417,11 +416,11 @@ function buildMenu(){
     el.addEventListener('click',()=>{ chosen=id; box.querySelectorAll('.tile').forEach(c=>c.setAttribute('aria-checked',c.dataset.h===id)); renderDetail(); $('detail').scrollTop=0; });
     box.appendChild(el);
   }
-  renderDetail(); syncAutoSw();
-  $('autoSwM').addEventListener('click',toggleAuto);
-  $('ctrl').innerHTML = isTouch
-    ? '<b>Левый палец</b> — джойстик движения в любом месте левой части экрана.<br><b>Красный джойстик</b> — атака: держи, чтобы бить ближайшего врага (линия покажет цель); потяни в сторону — выбрать цель в этом направлении. Если враг чуть дальше — герой сам подбежит.<br><b>Способности</b>: тап — автоприцел, потяни — ручной прицел, отпусти над «Отмена» — отменить.<br>Кнопка <b>i</b> — пауза и описание урона. Кусты прячут от врагов.<br><b>Цель</b> — разрушить вражеский Трон в правом верхнем углу. По карте идут 3 линии, на каждой по 3 башни. Башни бьют больно, заходи под них вместе со своими крипами. Башню можно разрушить только обычной атакой, и только по очереди: сначала ближнюю, потом следующие. Трон становится уязвим, когда пала любая башня у входа в базу. В лесу живут лагеря крипов, на реке — босс Глыбозуб: он даёт всей команде много опыта и лечение.'
-    : '<b>Клик по земле</b> (можно зажать) или стрелки — идти, <b>S</b> — стоп.<br><b>Пробел или A</b> — атака (держи), мышью выбираешь цель. Если враг чуть дальше — герой сам подбежит.<br><b>Q W E R</b> — зажми, наведи мышью, отпусти. <b>F</b> — флакон. <b>Esc</b> — пауза.<br>Кусты прячут от врагов.<br><b>Цель</b> — разрушить вражеский Трон в правом верхнем углу. На каждой из 3 линий по 3 башни, их надо ломать по очереди обычной атакой. Под башни заходи вместе со своими крипами. На реке живёт босс Глыбозуб: он даёт всей команде много опыта.';
+  renderDetail();
+  const goal='<b>Цель</b> — разрушить вражеский Трон в правом верхнем углу карты. К нему ведут 3 линии, на каждой по 3 башни: их ломают по очереди, от дальней к ближней. За третьей башней на холме базы стоят два барака этой линии. Трон становится уязвим, когда пал хотя бы один барак. Если разрушить оба барака линии, твои волны на ней получают усиленного крипа.<br>Башни, бараки и Трон можно бить только обычной атакой. Под башни заходи вместе со своими крипами.<br><b>Лес</b>: лагеря крипов по обе стороны реки дают опыт. <b>Руны</b> появляются на реке каждые 60 секунд: скорость, урон, лечение или щит — просто подойди. <b>Босс Глыбозуб</b> живёт в пещере в левом верхнем углу: он даёт всей команде много опыта и лечение.';
+  $('ctrl').innerHTML = (isTouch
+    ? '<b>Левый палец</b> — джойстик движения в любом месте левой части экрана.<br><b>Большая красная кнопка в углу</b> — атака: держи, и герой бьёт ближайшего врага (герои важнее крипов). Если враг чуть дальше — герой сам подбежит.<br><b>Жёлтая кнопка над ней</b> — бить только башни, бараки и Трон. <b>Зелёная кнопка рядом</b> — бить только крипов.<br><b>Способности</b>: тап — автоприцел, потяни — ручной прицел, отпусти над «Отмена» — отменить.<br>Кнопка <b>i</b> — пауза и описание урона. Кусты прячут от врагов.<br>'
+    : '<b>Клик по земле</b> (можно зажать) или стрелки — идти, <b>S</b> — стоп.<br><b>Пробел или A</b> — атака (держи), мышью выбираешь, в какую сторону бить. Если враг чуть дальше — герой сам подбежит.<br><b>X</b> — бить только башни, бараки и Трон. <b>C</b> — бить только крипов.<br><b>Q W E R</b> — зажми, наведи мышью, отпусти. <b>F</b> — флакон. <b>Esc</b> — пауза.<br>Кусты прячут от врагов.<br>')+goal;
   $('howBtn').addEventListener('click',()=>{ $('how').hidden=false; });
   $('howClose').addEventListener('click',()=>{ $('how').hidden=true; });
 }
@@ -1106,7 +1105,7 @@ function makeStars(){ const g=new T.Group(), m=basic(0xffe066); for(let i=0;i<3;
 let state='menu', units=[], projectiles=[], effects=[], camps=[], score=[0,0], matchTime=0, time=0, player=null, uid=0, camShake=0, waveT=0;
 let superLane=[{},{}], botPlayer=false, cullOn=true, cullF=1, dbgCam=null, caveK=0, caveFade=0;
 const camTarget = new T.Vector3();
-let aim=null, atkAim=null, atkKey=false, atkTap=0, moveTarget=null, mouseHeld=false;
+let aim=null, atkAim=null, atkKey=false, atkTap=0, atkMode='any', moveTarget=null, mouseHeld=false;
 const keys={}, mouse={x:innerWidth/2,y:innerHeight/2}, mouseWorld=new T.Vector3();
 const stick={active:false,id:null,ox:0,oy:0,x:0,y:0};
 
@@ -1453,7 +1452,6 @@ function autoAttack(u){
   if(u.isCreep){ t=u.ai.target; if(!t||!t.alive||u.ai.returning||!inAtkRange(u,t)) return; }
   else if(u.isPlayer&&!botPlayer){
     if(wantsAttack()) t=u.atkTarget;
-    else if(autoAtk) t=pickAttackTarget(u,null,0,o=>!o.isCreep||o.isLane||o.ai.target===u);
     if(!t||!t.alive||!inAtkRange(u,t)) return;
     atkTap=0;
   } else {
@@ -1849,7 +1847,7 @@ function playerInput(dt){
   else if(atkAim&&atkAim.key) atkAim=null;
   // which enemy the attack is aimed at: in range first, otherwise a little further (hero walks up to it)
   u.atkTarget=null;
-  if(wantsAttack()&&u.alive){ const dh=atkAim&&atkAim.manual?atkAim.dir:null; u.atkTarget=pickAttackTarget(u,dh,0)||pickAttackTarget(u,dh,4.5); }
+  if(wantsAttack()&&u.alive){ const dh=atkAim&&atkAim.manual?atkAim.dir:null, flt=ATK_FILTER[atkMode]; u.atkTarget=pickAttackTarget(u,dh,0,flt)||pickAttackTarget(u,dh,atkMode==='build'?6.5:4.5,flt); }
   if(stick.active){ mx=stick.x; mz=stick.y; moveTarget=null; }
   else {
     if(keys.ArrowLeft) mx-=1; if(keys.ArrowRight) mx+=1; if(keys.ArrowUp) mz-=1; if(keys.ArrowDown) mz+=1;
@@ -1907,19 +1905,22 @@ addEventListener('keydown',e=>{
     const ab=player.def.abilities[idx];
     if(aimKind(ab)==='self'){ cast(player,idx,null,null); } else startAim(idx,{key:e.code,manual:true});
   }
-  if(e.code==='Space'||e.code==='KeyA'){ atkKey=true; atkTap=.4; }
+  const am={Space:'any',KeyA:'any',KeyX:'build',KeyC:'creep'}[e.code]; if(am){ atkKey=true; atkMode=am; atkTap=.4; }
   if(e.code==='KeyF'||e.code==='Digit5'){ if(!useItem(player)) deny(4); }
   if(e.code==='KeyS') moveTarget=null;
 });
-addEventListener('keyup',e=>{ keys[e.code]=false; if(aim&&aim.key===e.code) finishAim(true); if(e.code==='Space'||e.code==='KeyA') atkKey=!!(keys.Space||keys.KeyA); });
+addEventListener('keyup',e=>{ keys[e.code]=false; if(aim&&aim.key===e.code) finishAim(true); atkKey=!!(keys.Space||keys.KeyA||keys.KeyX||keys.KeyC); });
 
 /* ================= HUD ================= */
-let btns=[], atkBtn=null;
+let btns=[], atkBtn=null, atkMinis=[];
+// what each attack button is allowed to hit
+const ATK_FILTER={any:null,build:o=>o.isTower,creep:o=>o.isCreep};
 function buildSkills(){
   const box=$('skills'); box.innerHTML=''; btns=[];
   const d=player.def, style=heroStyle(d);
-  // centres measured from the bottom-right corner: attack pad in the corner, abilities on an arc around it
-  const C={atk:[64,64],0:[194,60],1:[176,128],2:[128,176],3:[62,196],item:[262,60]};
+  // centres measured from the bottom-right corner of the safe area: the attack sector fills the corner,
+  // its two small buttons hug it (structures above, creeps beside), abilities stand on an arc around them
+  const C={0:[211,34],1:[180,117],2:[117,180],3:[34,211],item:[280,30],build:[30,150],creep:[150,30]};
   const place=(el,[r,b])=>{ el.style.right=r+'px'; el.style.bottom=b+'px'; el.style.translate='50% 50%'; };
   d.abilities.forEach((ab,i)=>{
     const el=document.createElement('button'); el.className='sk'+(ab.ult?' ult':''); el.setAttribute('aria-label',ab.name); el.style.cssText=style; place(el,C[i]);
@@ -1932,22 +1933,21 @@ function buildSkills(){
   it.innerHTML=`${svg('flask')}<span class="cd"></span><span class="n"></span><i class="k">F</i>`;
   it.addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); if(state==='play'&&!useItem(player)) deny(4); });
   box.appendChild(it); btns.push({el:it,cd:it.querySelector('.cd'),n:it.querySelector('.n'),prev:0,lastP:-1,lastN:''});
-  const at=document.createElement('div'); at.className='apad'; at.setAttribute('role','button'); at.setAttribute('aria-label','Атака'); place(at,C.atk);
-  at.innerHTML=`<span class="cd"></span><span class="kn">${svg('sword')}</span>${isTouch?'':'<i class="k">␣</i>'}`;
-  hookAttack(at); box.appendChild(at); atkBtn={el:at,cd:at.querySelector('.cd'),kn:at.querySelector('.kn'),lastP:-1};
+  const at=document.createElement('div'); at.className='apad'; at.setAttribute('role','button'); at.setAttribute('aria-label','Атака');
+  at.innerHTML=`<span class="cd"></span>${svg('sword')}${isTouch?'':'<i class="k">␣</i>'}`;
+  hookAttack(at,'any'); box.appendChild(at); atkBtn={el:at,cd:at.querySelector('.cd'),lastP:-1};
+  atkMinis=[['build','tower','Бить только башни, бараки и Трон','X'],['creep','creep','Бить только крипов','C']].map(([mode,icon,label,key])=>{
+    const b=document.createElement('div'); b.className='amini '+mode; b.setAttribute('role','button'); b.setAttribute('aria-label',label); place(b,C[mode]);
+    b.innerHTML=svg(icon)+(isTouch?'':`<i class="k">${key}</i>`); hookAttack(b,mode); box.appendChild(b); return b; });
 }
-function hookAttack(el){
-  const kn=()=>atkBtn&&atkBtn.kn;
+// every attack button works only while it is held; the mode decides which enemies count as targets
+function hookAttack(el,mode){
   el.addEventListener('pointerdown',e=>{
     e.preventDefault(); e.stopPropagation(); if(state!=='play') return;
     try{ el.setPointerCapture(e.pointerId); }catch(_){}
-    const r=el.getBoundingClientRect(); atkAim={pid:e.pointerId,cx:r.left+r.width/2,cy:r.top+r.height/2,manual:false,dir:{x:0,z:1}}; atkTap=.4;
-    el.classList.add('aim');
+    atkAim={pid:e.pointerId}; atkMode=mode; atkTap=.4; el.classList.add('aim');
   });
-  el.addEventListener('pointermove',e=>{ if(!atkAim||atkAim.pid!==e.pointerId) return; let dx=e.clientX-atkAim.cx, dy=e.clientY-atkAim.cy; const L=Math.hypot(dx,dy), R=30;
-    if(L>16){ atkAim.manual=true; atkAim.dir={x:dx/L,z:dy/L}; } else atkAim.manual=false;
-    if(L>R){ dx=dx/L*R; dy=dy/L*R; } if(kn()) kn().style.transform=`translate(${dx}px,${dy}px)`; });
-  const up=e=>{ if(atkAim&&atkAim.pid===e.pointerId){ atkAim=null; el.classList.remove('aim'); if(kn()) kn().style.transform=''; } };
+  const up=e=>{ if(atkAim&&atkAim.pid===e.pointerId) atkAim=null; el.classList.remove('aim'); };
   el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up);
 }
 function hookButton(el,i){
@@ -1985,7 +1985,7 @@ function updateHud(){
     if(b.prev>0&&cd<=0){ b.el.classList.remove('flash'); void b.el.offsetWidth; b.el.classList.add('flash'); }
     b.prev=cd;
   });
-  if(atkBtn){ const p=Math.round(clamp(u.atkT/u.def.atk.cd,0,1)*20)/20; if(p!==atkBtn.lastP){ atkBtn.cd.style.setProperty('--p',p); atkBtn.lastP=p; } atkBtn.el.classList.toggle('off',!u.alive||u.stun>0); }
+  if(atkBtn){ const p=Math.round(clamp(u.atkT/u.def.atk.cd,0,1)*20)/20; if(p!==atkBtn.lastP){ atkBtn.cd.style.setProperty('--p',p); atkBtn.lastP=p; } const off=!u.alive||u.stun>0; atkBtn.el.classList.toggle('off',off); atkMinis.forEach(b=>b.classList.toggle('off',off)); }
   const dEl=$('death');
   if(!u.alive){ dEl.hidden=false; dEl.innerHTML=`Вы погибли<span>Возрождение через ${Math.ceil(u.respawn)} с</span>`; } else dEl.hidden=true;
 }
@@ -2051,12 +2051,12 @@ function drawMinimap(){
 function openInfo(){
   if(state!=='play') return; state='pause'; if(aim) finishAim(false); atkAim=null; atkKey=false; stick.active=false; stick.x=stick.y=0; stickRest();
   const u=player; $('infoCard').innerHTML=detailHTML(u.def,u.abMul,u.atkMul,u.level,u.maxHp);
-  syncAutoSw(); $('info').hidden=false;
+  document.querySelectorAll('.apad.aim,.amini.aim').forEach(b=>b.classList.remove('aim')); $('info').hidden=false;
 }
 function closeInfo(){ if(state!=='pause') return; $('info').hidden=true; state='play'; last=performance.now(); }
 $('infoBtn').addEventListener('pointerdown',e=>{ e.stopPropagation(); }); $('infoBtn').addEventListener('click',openInfo);
 $('resume').addEventListener('click',closeInfo);
-$('autoSw').addEventListener('click',toggleAuto);
+
 $('quit').addEventListener('click',()=>{ $('info').hidden=true; toMenu(); });
 
 /* ================= CAMERA & LOOP ================= */
