@@ -201,6 +201,10 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 .btn{font:18px var(--display);letter-spacing:.04em;text-transform:uppercase;padding:14px 38px;border-radius:12px;border:0;cursor:pointer;color:#2a1a00;background:linear-gradient(#ffd66d,#dea52b);box-shadow:0 4px 0 #8a6110}
 .btn:active{transform:translateY(2px);box-shadow:0 2px 0 #8a6110}
 .btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.gfx{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:13px;color:var(--fg)}
+.gfx span{opacity:.75;margin-right:2px}
+.gfx button{font:inherit;padding:7px 11px;border-radius:9px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--fg);cursor:pointer}
+.gfx button.on{background:#e6b03a;border-color:#e6b03a;color:#2a1a00;font-weight:700}
 .btn.ghost{background:transparent;color:var(--fg);box-shadow:none;border:1px solid var(--line)}
 .err{color:#ff8b98;font-size:13px;margin:0}
 
@@ -265,7 +269,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
     <section class="lb-detail panel" id="detail" aria-live="polite"></section>
     <footer class="lb-go">
       <p class="err" id="err" hidden>Не загрузился 3D-движок. Проверь интернет и обнови страницу.</p>
-
+      <div class="gfx"></div>
       <button class="btn" id="start">В бой</button>
     </footer>
   </div>
@@ -288,7 +292,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 
 <div id="pause" class="ov" hidden>
   <div class="card">
-    <div id="pauseMain"><h2>Пауза</h2><div class="row"><button class="btn" id="pResume">Продолжить</button><button class="btn ghost" id="pQuit">Выйти в лобби</button></div></div>
+    <div id="pauseMain"><h2>Пауза</h2><div class="gfx"></div><div class="row"><button class="btn" id="pResume">Продолжить</button><button class="btn ghost" id="pQuit">Выйти в лобби</button></div></div>
     <div id="pauseAsk" hidden><p>Точно выйти в лобби? Этот матч будет потерян.</p><div class="row"><button class="btn" id="pNo">Остаться</button><button class="btn ghost" id="pYes">Да, выйти</button></div></div>
   </div>
 </div>
@@ -562,8 +566,8 @@ const ROCKS = mirror([-1,1].flatMap(e=>[.6,2.25,3.9].map(t=>{ const s=-CHAMF+t; 
 PITS.forEach((P,pi)=>{ const n=20; for(let i=2;i<=n-2;i++){ const a=P.a0+i/n*TAU, edge=i===2||i===n-2; ROCKS.push({x:P.x+Math.cos(a)*PIT_WALL,z:P.z+Math.sin(a)*PIT_WALL,r:edge?2:1.9,k:'cave',pit:pi,edge,front:Math.sin(a)>.15}); } });
 const BUSHES = mirror([{x:-65,z:-8,w:3,d:5},{x:-20,z:13,w:4,d:4},{x:8,z:52.5,w:5,d:3},{x:-31,z:-1,w:4,d:4},{x:-13,z:41,w:4,d:4},{x:40,z:52.5,w:5,d:3}]);
 const CAMPDEF = mirror([
-  {x:-56.4,z:-13.3,type:'big'},{x:-56.4,z:8.3,type:'medium'},{x:-21.6,z:3.3,type:'big'},{x:-46.5,z:20,type:'small'},{x:-22.4,z:41.5,type:'small'},{x:-5,z:48,type:'medium'},{x:33.2,z:48,type:'big'},
-  {x:46.5,z:36.5,type:'hard'},{x:59.8,z:41.5,type:'ancient'},{x:-33.2,z:-6.6,type:'hard'},{x:-6.6,z:20,type:'medium'},{x:56.4,z:26.6,type:'small'},{x:20,z:48,type:'medium'},{x:-46.5,z:-3.3,type:'small'}
+  {x:-56.4,z:-13.3,type:'big'},{x:-56.4,z:8.3,type:'medium'},{x:-21.6,z:3.3,type:'big'},{x:-22.4,z:41.5,type:'small'},{x:-5,z:48,type:'medium'},{x:33.2,z:48,type:'big'},
+  {x:46.5,z:36.5,type:'hard'},{x:59.8,z:41.5,type:'ancient'},{x:-33.2,z:-6.6,type:'hard'},{x:-6.6,z:20,type:'medium'}
 ]).concat([{x:PITS[0].x,z:PITS[0].z,type:'boss'}]);
 const CAMPCOMP = {small:['small','small','small'],medium:['harpy','harpy'],big:['big','small','small'],hard:['beetle','beetle'],ancient:['ancient'],boss:['boss']};
 const aggroR = c => c.type==='boss'?PIT_R:c.type==='ancient'?5:4.2;   // equals the ring drawn on the ground around the camp
@@ -586,6 +590,7 @@ const OUTPOSTS = [{x:-39,z:6.6},{x:39,z:-6.6}];
 // stairs and plank walkways traced from the drawing: [x, z, direction of the long side, half length, half width]
 const PLANKS = [[-49.6,-72.7,0.58,3.6,1.5],[-23.1,-69.3,0.5,3.3,1.5],[-63.7,-62.1,-0.75,3.6,2.1],[-75.5,-60.1,0.02,4.4,1.4],[61.9,-56.6,0.81,5.2,2],[-16.3,-43.4,0.68,3.4,1.7],[-33.7,-40.6,-1.55,3,1.4],[-6.3,-39,0.05,3.3,1.9],[36.7,-32.2,0.88,5.2,1.9],[-37.7,-33.4,-0.81,3.5,2.1],[-1.1,-31.4,-1.48,2.7,1.3],[-59.8,-31.1,-0.06,2.8,2.2],[-66.7,-28.8,-1.54,3.1,1.3],[-21.5,-28.5,0.83,3.7,1.9],[-40.9,-21.8,0.69,3.4,1.8],[-6.3,-21.7,-0.01,3.5,1.9],[-68,-17.5,1.39,2.8,1.3],[-10.2,-12.4,0.81,3.6,2],[51,-13.5,0.53,3,1.9],[33.8,-13.5,0.04,3.1,1.8],[-28.4,-10.4,0.62,3.2,1.9],[71.5,-8.4,1.54,3.2,1.5],[-45,-7,-0.63,2.9,1.8],[-68,-5.8,1.42,2.9,1.3],[25.8,-2,1.29,2.5,2.2],[-1.7,-0.9,0.78,3.5,2.1],[49.5,-0.2,1.51,3.5,1.3],[-28.4,0.4,-1.49,2.7,1.4],[-8,3.3,0.69,3.4,2],[39,9.3,-0.8,3.8,1.9],[-68.1,11.2,1.55,3,1.4],[24.6,12.2,0.91,3.2,2.1],[6.1,12.4,0.73,3.1,2.3],[-50.6,14.5,0.79,3.4,2.2],[-33.5,15.2,-0.33,7.1,2.4],[39.9,16.8,0.85,3.5,2],[71.4,17.5,1.57,3.2,1.3],[15.6,24.5,0.54,3.8,1.7],[-62.4,24.1,-0.01,4.8,2.1],[-38.9,33.2,0.75,4.6,2.6],[36.8,33.7,-0.64,3.1,1.9],[58.8,33.4,0.26,2.1,1.3],[31.4,41,-1.52,3.1,1.6],[12.1,42.6,0.77,3.7,2.2],[21.1,50.2,0.02,3.2,1.3],[-31.3,54.5,-1.51,4.6,2.4],[-62.8,54.5,0.72,5,1.8],[62.9,58.3,-0.36,2.9,1.8],[56.2,71.4,0.82,3.4,2.1]].filter(p=>baseD(p[0],p[1],1)>RAMP+3&&baseD(p[0],p[1],-1)>RAMP+3&&Math.abs(p[0])<79&&Math.abs(p[1])<79);
 let treeMeshes = [];
+const NARROW = 4, NARROW_R = 2.2, CLUMP = 12;   // forest thinning: passages up to 3 cells wide are opened, clumps under 12 cells removed
 const fountCrystals = [], fountSpin = [], fountJets = [], campFires = [], caveCrystals = [], lowDetail = [], waterTexs = [];
 let caveFrontMat=null, caveLight=null, mapThumb=null;
 
@@ -608,6 +613,16 @@ function clearDisc(x,z,r,dry){ const i0=cI(x-r), i1=cI(x+r), j0=cI(z-r), j1=cI(z
   for(const P of PITS){ clearDisc(P.x,P.z,PIT_R+.6,true); clearDisc(P.x,P.z,PIT_WALL+2.4); clearDisc(P.x+Math.cos(P.a0)*(PIT_WALL+4),P.z+Math.sin(P.a0)*(PIT_WALL+4),4.5); }
   for(const b of BUSHES){ clearDisc(b.x,b.z,3.2,true); clearDisc(-b.x,-b.z,3.2,true); }
   for(const t of TOWERDEF) for(const sg of [1,-1]) clearDisc(t.x*sg,t.z*sg,4,true);
+  // more room to walk: narrow passages between trees are opened up, small clumps of trees are removed
+  { const inner=(i,j)=>i>1&&j>1&&i<MAPN-2&&j<MAPN-2;
+    const T1=MAP.slice(), tree=(i,j)=>T1[i+j*MAPN]===M_T&&inner(i,j);
+    for(let j=2;j<MAPN-2;j++) for(let i=2;i<MAPN-2;i++){ if(T1[i+j*MAPN]===M_T) continue;
+      for(const [di,dj] of [[1,0],[0,1],[1,1],[1,-1]]){ let a=0,b=0; for(let s=1;s<=3&&!a;s++) if(tree(i+di*s,j+dj*s)) a=s; for(let s=1;s<=3&&!b;s++) if(tree(i-di*s,j-dj*s)) b=s;
+        if(a&&b&&a+b<=NARROW){ clearDisc(cC(i),cC(j),NARROW_R); break; } } }
+    const seen=new Uint8Array(MAPN*MAPN);
+    for(let s=0;s<MAP.length;s++){ if(MAP[s]!==M_T||seen[s]) continue; const q=[s]; seen[s]=1; let border=false;
+      for(let h=0;h<q.length;h++){ const k=q[h], i=k%MAPN, j=(k/MAPN)|0; if(!inner(i,j)) border=true; for(const [di,dj] of [[1,0],[-1,0],[0,1],[0,-1]]){ const a=i+di,b=j+dj; if(a<0||b<0||a>=MAPN||b>=MAPN) continue; const n=a+b*MAPN; if(MAP[n]===M_T&&!seen[n]){ seen[n]=1; q.push(n); } } }
+      if(!border&&q.length<CLUMP) for(const k of q) MAP[k]=M_G; } }
   // rocks on the river banks: four cells of wall, then an opening down to the water; none on the lanes and at the pit mouths
   for(let j=1;j<MAPN-1;j++) for(let i=1;i<MAPN-1;i++){ const k=i+j*MAPN; if(MAP[k]===M_W||MAP[k]===M_T) continue;
     if(MAP[k-1]!==M_W&&MAP[k+1]!==M_W&&MAP[k-MAPN]!==M_W&&MAP[k+MAPN]!==M_W) continue;
@@ -823,6 +838,7 @@ function instChunks(geo,mat,items,place,o={}){
   for(const [k,a] of groups){ const ij=k.split(',').map(Number), cx=(ij[0]+.5)*CHUNK-220, cz=(ij[1]+.5)*CHUNK-220;
     const m=new T.InstancedMesh(geo,mat,a.length); m.position.set(cx,0,cz);
     a.forEach((it,n)=>{ dummy.rotation.set(0,0,0); dummy.scale.set(1,1,1); place(dummy,it,col); dummy.position.x-=cx; dummy.position.z-=cz; dummy.updateMatrix(); m.setMatrixAt(n,dummy.matrix); if(o.color) m.setColorAt(n,col); });
+    m.frustumCulled=true;   // off by default for instanced meshes in this three.js; the chunk sphere above makes it safe
     m.castShadow=!!o.cast; m.receiveShadow=!!o.recv; scene.add(m); out.push(m); }
   return out;
 }
@@ -2471,30 +2487,40 @@ function update(dt){
   animateWorld(dt); updateIndicator(); camUpdate(dt); updateHud();
   mmT-=dt; if(mmT<=0){ mmT=.2; drawMinimap(); }
 }
-// picture quality: 2 high, 1 medium, 0 low. Phones start on medium. The FPS is measured during the first seconds of a
-// match and the level drops when the device cannot keep up.
-//   high:   2x resolution, soft 2048 shadows every frame, ink outlines, grass, fireflies, grotto light
-//   medium: 1.5x resolution, 1024 shadows refreshed every second frame, no outlines on phones
-//   low:    1.1x resolution, no shadows, no outlines, no grass tufts and fireflies
-const QUAL=[{pr:1.1,shadow:0},{pr:1.5,shadow:1024},{pr:2,shadow:2048}];
-let last=performance.now(), perfAcc=0, perfN=0, perfSkip=1, qFirst=true, qLevel=2, frameN=0;
+// picture quality: 3 high, 2 medium, 1 low, 0 minimum. The player picks a level (lobby or pause menu) or leaves it on
+// "auto": then phones start on medium, the FPS is measured during the match and the level drops when the device cannot keep up.
+//   high:    2x resolution, soft 2048 shadows every frame, ink outlines, grass, fireflies, grotto light
+//   medium:  1.5x resolution, 1024 shadows refreshed every second frame, no outlines on phones
+//   low:     1.1x resolution, no shadows, no outlines
+//   minimum: 0.8x resolution, no shadows, no grass tufts and flowers
+const QUAL=[{pr:.8,shadow:0},{pr:1.1,shadow:0},{pr:1.5,shadow:1024},{pr:2,shadow:2048}], GFX_NAMES=['Мин','Низк','Средн','Высок'];
+let last=performance.now(), perfAcc=0, perfN=0, perfSkip=1, qFirst=true, qLevel=3, frameN=0, gfxPick='auto';
+try{ const v=localStorage.getItem('arenaGfx'); if(v!=null&&QUAL[+v]) gfxPick=+v; }catch(_){}
 function setQuality(q){
   qLevel=q; const Q=QUAL[q];
   prCur=Math.min(devicePixelRatio||1,Q.pr); renderer.setPixelRatio(prCur); renderer.setSize(innerWidth,innerHeight);
   sun.castShadow=Q.shadow>0;
   if(Q.shadow&&sun.shadow.mapSize.x!==Q.shadow){ sun.shadow.mapSize.set(Q.shadow,Q.shadow); if(sun.shadow.map){ sun.shadow.map.dispose(); sun.shadow.map=null; } }
-  OUTLINE.visible=q===2||(!isTouch&&q===1);
-  treeMeshes.forEach(m=>{ m.castShadow=q===2; });   // the forest is the heaviest thing in the shadow pass
-  lowDetail.forEach(m=>{ m.visible=q>0; }); FF.pts.visible=q>0; caveLight.intensity=q>1?1.5:0;
+  OUTLINE.visible=q===3||(!isTouch&&q===2);
+  treeMeshes.forEach(m=>{ m.castShadow=q===3; });   // the forest is the heaviest thing in the shadow pass
+  lowDetail.forEach(m=>{ m.visible=q>0; }); FF.pts.visible=q>1; caveLight.intensity=q>2?1.5:0;
+
 }
 function adaptQuality(raw){
+  if(gfxPick!=='auto') return;
   if(perfSkip>0){ perfSkip-=raw; return; }
   perfAcc+=raw; perfN++;
   if(perfAcc<3) return;
   const fps=perfN/perfAcc; perfAcc=0; perfN=0;
-  if(qFirst){ qFirst=false; if(fps<34) setQuality(0); else if(fps<50) setQuality(Math.min(qLevel,1)); return; }
+  if(qFirst){ qFirst=false; if(fps<34) setQuality(Math.max(0,qLevel-2)); else if(fps<50) setQuality(Math.max(0,qLevel-1)); return; }
   if(fps<38&&qLevel>0) setQuality(qLevel-1);
 }
+// the graphics switch (lobby and pause menu): the choice is remembered on this device
+function applyGfx(){ setQuality(gfxPick==='auto'?(isTouch?2:3):gfxPick); qFirst=true; perfSkip=1; perfAcc=perfN=0;
+  document.querySelectorAll('.gfx button').forEach(b=>b.classList.toggle('on',b.dataset.g===String(gfxPick))); }
+document.querySelectorAll('.gfx').forEach(el=>{ el.innerHTML='<span>Графика</span>'+['auto',0,1,2,3].map(g=>`<button data-g="${g}">${g==='auto'?'Авто':GFX_NAMES[g]}</button>`).join('');
+  el.addEventListener('pointerdown',e=>e.stopPropagation());
+  el.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; gfxPick=b.dataset.g==='auto'?'auto':+b.dataset.g; try{ localStorage.setItem('arenaGfx',gfxPick); }catch(_){} applyGfx(); }); });
 function frame(now){
   requestAnimationFrame(frame);
   const raw=Math.max(0,(now-last)/1000), dt=Math.min(.1,raw); last=now;
@@ -2505,11 +2531,11 @@ function frame(now){
   else { menuCam(); animateWorld(dt); }
   camera.updateMatrixWorld();
   if(state!=='menu') updateBars();
-  renderer.shadowMap.needsUpdate=qLevel===2||frameN%2===0;
+  renderer.shadowMap.needsUpdate=qLevel===3||frameN%2===0;
   renderer.render(scene,camera);
 }
 renderer.shadowMap.autoUpdate=false;
-setQuality(isTouch?1:2);
+applyGfx();
 
 /* ================= MATCH FLOW ================= */
 function clearMatch(){
