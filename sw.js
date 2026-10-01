@@ -1,4 +1,4 @@
-const C='arena-v5';
+const C='arena-v6';
 self.addEventListener('install',e=>self.skipWaiting());
 self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));
 self.addEventListener('fetch',e=>{

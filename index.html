@@ -103,16 +103,16 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 @media (max-width:640px){#hud{--mm:110px}.feed{top:calc(52px + env(safe-area-inset-top,0px))}#vit{left:calc(10px + env(safe-area-inset-left,0px));right:auto;bottom:calc(280px + env(safe-area-inset-bottom,0px));width:150px}}
 
 #skills{position:absolute;right:calc(22px + env(safe-area-inset-right,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));width:300px;height:270px;pointer-events:none}
-.sk{position:absolute;width:60px;height:60px;border-radius:50%;padding:0;border:2px solid #0b1110;pointer-events:auto;touch-action:none;cursor:pointer;color:var(--g);
+.sk{position:absolute;width:55px;height:55px;border-radius:50%;padding:0;border:2px solid #0b1110;pointer-events:auto;touch-action:none;cursor:pointer;color:var(--g);
   background:radial-gradient(circle at 35% 28%,var(--c2),var(--c1) 70%);display:grid;place-items:center;
   box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.12);transition:scale .16s ease-out,box-shadow .16s ease-out}
 .sk svg{width:50%;height:50%;filter:drop-shadow(0 1px 1px rgba(0,0,0,.6))}
 .sk .cd{position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(3,7,7,.8) calc(var(--p,0) * 1turn),transparent 0)}
-.sk .n{position:absolute;inset:0;display:grid;place-items:center;font:20px var(--display);color:#fff;text-shadow:0 2px 3px #000}
+.sk .n{position:absolute;inset:0;display:grid;place-items:center;font:18px var(--display);color:#fff;text-shadow:0 2px 3px #000}
 
 .sk .mc{position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);font:700 10px var(--body);font-style:normal;background:#173a7a;color:#d6e4ff;border-radius:6px;padding:0 5px;border:1px solid #0b1110}
-.sk.ult{width:70px;height:70px;border-color:#7a5a12;box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(243,193,75,.55),0 0 18px -4px rgba(243,193,75,.5)}
-.sk.item{width:46px;height:46px}
+.sk.ult{width:64px;height:64px;border-color:#7a5a12;box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(243,193,75,.55),0 0 18px -4px rgba(243,193,75,.5)}
+.sk.item{width:42px;height:42px}
 .sk.nomana{filter:saturate(.25) brightness(.8)}.sk.nomana .mc{background:#7a1b25}
 .sk.off,.apad.off,.amini.off{filter:grayscale(1) brightness(.6)}
 .sk.aim{scale:1.06;box-shadow:0 0 0 3px var(--gold),0 0 20px 5px var(--g)}
@@ -121,7 +121,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 @keyframes flash{0%{box-shadow:0 0 0 0 rgba(255,255,255,.9)}100%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}
 @keyframes denyf{0%{box-shadow:0 0 0 4px #ff5468}100%{box-shadow:0 0 0 4px rgba(255,84,104,0)}}
 /* attack: a quarter-circle sector pressed into the bottom-right corner (square towards the corner, round towards the thumb) */
-.apad{position:absolute;right:0;bottom:0;width:152px;height:152px;border-radius:100% 28px 28px 28px;overflow:hidden;pointer-events:auto;touch-action:none;cursor:pointer;
+.apad{position:absolute;right:12px;bottom:12px;width:152px;height:152px;border-radius:100% 28px 28px 28px;overflow:hidden;pointer-events:auto;touch-action:none;cursor:pointer;
   border:2px solid rgba(255,170,130,.85);background:radial-gradient(circle at 100% 100%,#ffa477 0,#e0502e 48%,#8a2412 100%);
   box-shadow:0 0 22px -6px rgba(255,90,50,.75),inset 0 0 0 2px rgba(255,255,255,.14);transform-origin:100% 100%;transition:scale .16s ease-out,filter .16s ease-out}
 .apad svg{position:absolute;right:32px;bottom:32px;width:58px;height:58px;color:#fff3ea;filter:drop-shadow(0 2px 2px rgba(0,0,0,.55))}
@@ -129,12 +129,12 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 .apad.aim{scale:1.04;filter:brightness(1.22)}
 
 /* two small attack buttons: structures only (above the sector) and creeps only (beside it) */
-.amini{position:absolute;width:56px;height:56px;border-radius:17px;display:grid;place-items:center;pointer-events:auto;touch-action:none;cursor:pointer;border:2px solid #0b1110;
-  box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.16);transition:scale .16s ease-out,box-shadow .16s ease-out}
-.amini svg{width:31px;height:31px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
-.amini.build{background:linear-gradient(#f6d47c,#b9822a);color:#3a2606}
-.amini.creep{background:linear-gradient(#9be276,#3f8a3a);color:#0f2a10}
-.amini.aim{scale:1.06;box-shadow:0 0 0 3px #fff,0 0 18px 3px rgba(255,255,255,.65)}
+.amini{position:absolute;width:51px;height:51px;border-radius:100% 11px 11px 11px;overflow:hidden;pointer-events:auto;touch-action:none;cursor:pointer;border:2px solid var(--bd);
+  background:radial-gradient(circle at 100% 100%,var(--a) 0,var(--b) 50%,var(--c) 100%);box-shadow:0 0 16px -6px var(--b),inset 0 0 0 2px rgba(255,255,255,.16);transform-origin:100% 100%;transition:scale .16s ease-out,filter .16s ease-out}
+.amini svg{position:absolute;right:7px;bottom:7px;width:26px;height:26px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+.amini.build{right:4px;bottom:168px;--a:#ffe39a;--b:#e0a52e;--c:#8a5a12;--bd:rgba(255,226,150,.9);color:#3a2606}
+.amini.creep{right:168px;bottom:4px;--a:#c2f59a;--b:#4fae42;--c:#1f5a22;--bd:rgba(190,245,160,.9);color:#0f2a10}
+.amini.aim{scale:1.05;filter:brightness(1.22)}
 
 #cancel{position:absolute;right:calc(300px + env(safe-area-inset-right,0px));bottom:calc(150px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:rgba(40,8,12,.75);border:2px solid #6b2430;color:#ff8b98;font:11px var(--display);text-transform:uppercase}
 #cancel.hot{background:#b3263a;color:#fff;border-color:#ff8b98}
@@ -1398,7 +1398,7 @@ function runeFor(u){ let best=null,bd=30; for(const s of RUNE_SPOTS){ if(!s.rune
 /* ================= COMBAT ================= */
 function damage(t,amt,src,isAb){
   if(!t.alive) return;
-  if(t.isTower){ if(t.invuln||isAb||!src) return; if(src.isCreep) amt*=1+matchTime/420; }   // sieges speed up as the match goes on
+  if(t.isTower){ if(t.invuln||isAb||!src) return; if(src.isCreep) amt*=Math.max(.2,(matchTime-400)/140); }   // creeps barely scratch structures early on; sieges speed up as the match goes on
   if(t.def.armor) amt*=1-t.def.armor;
   if(t.reduceT>0) amt*=t.reduceMul;
   if(t.ampT>0) amt*=t.ampMul;
@@ -1421,6 +1421,7 @@ function damage(t,amt,src,isAb){
 function aggroCamp(c,src){ for(const k of c.creeps) if(k.alive&&!k.ai.returning&&(!k.ai.target||!k.ai.target.alive)) k.ai.target=src; }
 function addXP(u,n){
   if(!isHero(u)) return;
+  if(!u.isPlayer&&!duelMode) n=Math.round(n*.82);   // bots level up a bit slower than the player
   u.xp+=n; if(u.isPlayer) floatText(u,'+'+n+' опыта','xp');
   while(u.level<MAXLVL&&u.xp>=xpNeed(u.level)){ u.xp-=xpNeed(u.level); levelUp(u); }
   if(u.level>=MAXLVL) u.xp=0;
@@ -1621,7 +1622,10 @@ function autoAttack(u){
     atkTap=0;
   } else {
     const farm=u.ai.mode==='farm'&&!u.ai.target;
-    t=nearestEnemy(u,u.def.atk.range+1,o=>o.isTower?(creepsNear(o.pos,u.team,o.def.atk.range)||o.hp<o.maxHp*.15||(o.ai.target!==u&&u.hp>u.maxHp*.5)):(!o.isCreep||o.isLane||farm||o.ai.target===u));
+    // bots hit only the hero they have reacted to, and leave structures alone during the first minutes
+    const pro=u.ai.pro;
+    t=nearestEnemy(u,u.def.atk.range+1,o=>o.isTower?((pro||matchTime>480)&&(creepsNear(o.pos,u.team,o.def.atk.range)||o.hp<o.maxHp*.15||(pro&&o.ai.target!==u&&u.hp>u.maxHp*.5))):
+      o.isCreep?(o.isLane||farm||o.ai.target===u):(pro||duelMode||o===u.ai.target));
     if(!t||!inAtkRange(u,t)) return;
   }
   doAttack(u,t);
@@ -1728,6 +1732,10 @@ const rectGeo=new T.PlaneGeometry(1,1); rectGeo.rotateX(-Math.PI/2); rectGeo.tra
 const indRect=new T.Mesh(rectGeo,indMatA); indRect.visible=false; scene.add(indRect);
 // attack: no arrows or beams, only a ring under the enemy that is being hit
 const atkRing=flatGroup(GEO.ring,atkMatT);
+// attack range: a thin crisp ring with a soft glow, shown for about a second while an attack button is held
+const rangeMat=fadeMat(0xff7a55,0), rangeGlow=addMat(0xff7a55,0); rangeMat.userData.shared=rangeGlow.userData.shared=true;
+const atkRangeRing=flatGroup(new T.RingGeometry(.974,1,96),rangeMat); { const e=new T.Mesh(new T.RingGeometry(.93,1.035,96),rangeGlow); e.rotation.x=-Math.PI/2; e.position.y=-.005; atkRangeRing.add(e); }
+const RANGE_COL={any:0xff7a55,build:0xf3c14b,creep:0x7be26a}; let atkHeldT=-1;
 function autoAim(u,ab){
   const kind=aimKind(ab), reach=(ab.range||6)+2, t=nearestEnemy(u,reach);
   let dir, point=null;
@@ -1746,9 +1754,13 @@ function resolveAim(u,ab,a){
   return {dir,point};
 }
 function updateIndicator(){
-  indRange.visible=indArea.visible=indRect.visible=atkRing.visible=false;
-  if(!player||!player.alive) return;
+  indRange.visible=indArea.visible=indRect.visible=atkRing.visible=atkRangeRing.visible=false;
+  if(!player||!player.alive){ atkHeldT=-1; return; }
   const u=player, y=u.pos.y;
+  if(!(atkAim||atkKey)||state!=='play') atkHeldT=-1;
+  else { if(atkHeldT<0) atkHeldT=time; const e=time-atkHeldT, a=Math.min(1,e/.12)*(e<1?1:Math.max(0,1-(e-1)/.3));
+    if(a>0){ const r=u.def.atk.range, col=RANGE_COL[atkMode]; atkRangeRing.visible=true; atkRangeRing.position.set(u.pos.x,y+.11,u.pos.z); atkRangeRing.scale.set(r,1,r);
+      rangeMat.color.setHex(col); rangeGlow.color.setHex(col); rangeMat.opacity=.95*a; rangeGlow.opacity=.24*a; } }
   const tgt=wantsAttack()?u.atkTarget:(u.lastAtkT>0&&u.lastAtk&&u.lastAtk.alive?u.lastAtk:null);
   if(tgt){ const pulse=1+Math.sin(time*10)*.06; atkRing.visible=true; atkRing.position.set(tgt.pos.x,tgt.pos.y+.1,tgt.pos.z); const rr=(tgt.radius+.35)*pulse; atkRing.scale.set(rr,1,rr); }
   if(!aim) return;
@@ -1762,10 +1774,15 @@ function updateIndicator(){
 }
 
 /* ================= AI ================= */
-function pickTarget(u){ let best=null,bs=1e9;
-  for(const o of units){ if(!o.alive||!isHero(o)||o.team===u.team||hiddenFrom(o,u.team)) continue; const d=distXZ(u.pos,o.pos); if(d>15) continue;
-    if(underTower(o.pos,u.team,0)&&o.hp>o.maxHp*.3) continue;
-    let s=d-(1-o.hp/o.maxHp)*5; if(o===u.lastHit&&u.lastHitT>8) s-=3; if(o===u.ai.target) s-=1.5; if(distXZ(o.pos,FOUNT[o.team])<6) s+=8; if(s<bs){bs=s;best=o;} }
+// Bots are deliberately beginner-friendly: they see less far, do not dive under towers, do not gang up on one hero and
+// give up a chase. (ai.pro switches all handicaps off; it is used only by the test duels.)
+function pickTarget(u){ let best=null,bs=1e9; const ai=u.ai, pro=ai.pro;
+  for(const o of units){ if(!o.alive||!isHero(o)||o.team===u.team||hiddenFrom(o,u.team)) continue; const d=distXZ(u.pos,o.pos); if(d>(pro?15:11)) continue;
+    if(!pro&&o===ai.ignore&&ai.ignoreT>0) continue;
+    if(underTower(o.pos,u.team,0)&&(!pro||o.hp>o.maxHp*.3)) continue;
+    let s=d-(1-o.hp/o.maxHp)*(pro?5:2); if(o===u.lastHit&&u.lastHitT>8) s-=3; if(o===ai.target) s-=1.5; if(distXZ(o.pos,FOUNT[o.team])<6) s+=8;
+    if(!pro) for(const a of units) if(a!==u&&a.alive&&a.team===u.team&&isHero(a)&&!a.isPlayer&&a.ai.target===o) s+=3;
+    if(s<bs){bs=s;best=o;} }
   return best; }
 function steer(u,gx,gz){
   let dx=gx-u.pos.x, dz=gz-u.pos.z; const L=Math.hypot(dx,dz); if(L<.3) return {x:0,z:0};
@@ -1774,11 +1791,13 @@ function steer(u,gx,gz){
   return {x:dx/L,z:dz/L};
 }
 function tryAbilities(u,t,farm){
-  const d=distXZ(u.pos,t.pos), dir=norm(t.pos.x-u.pos.x,t.pos.z-u.pos.z,u), hpf=u.hp/u.maxHp;
+  const d=distXZ(u.pos,t.pos), dir=norm(t.pos.x-u.pos.x,t.pos.z-u.pos.z,u), hpf=u.hp/u.maxHp, pro=u.ai.pro;
   for(const i of [0,1,2,3].sort(()=>Math.random()-.5)){
     if(farm&&i===3) continue;
-    if(!canCast(u,i)||Math.random()>(farm?.25:.5)) continue;
+    if(!canCast(u,i)||Math.random()>(pro?(farm?.25:.5):(farm?.18:.3))) continue;
     const ab=u.def.abilities[i]; let ok=false, cdir=dir, pt=null;
+    // the ultimate: only in a fitting moment and much less often than its cooldown allows
+    if(!pro&&ab.ult&&(u.ai.ultLock>0||hpf<.35||(t.hp>t.maxHp*.65&&countHeroes(u,u.pos,7)<2))) continue;
     switch(ab.type){
       case 'razes': ok=d<ab.range-.6; break;
       case 'shadowstep': ok=!farm&&d>3&&d<ab.range+1&&hpf>.5; pt={x:t.pos.x,z:t.pos.z}; break;
@@ -1800,7 +1819,11 @@ function tryAbilities(u,t,farm){
       case 'rage': ok=d<4; break;
       case 'inferno': ok=d<3.2||countHeroes(u,u.pos,4)>=2; break;
     }
-    if(ok){ cast(u,i,cdir,pt||{x:u.pos.x+cdir.x*(ab.range||4),z:u.pos.z+cdir.z*(ab.range||4)}); return; }
+    if(ok){
+      if(!pro){ // imperfect aim, a pause before the next ability (no instant combos)
+        const e=rand(-.3,.3), c=Math.cos(e), s=Math.sin(e); cdir={x:cdir.x*c-cdir.z*s,z:cdir.x*s+cdir.z*c}; if(pt) pt={x:pt.x+rand(-1.5,1.5),z:pt.z+rand(-1.5,1.5)};
+        u.ai.abCd=rand(1.6,3.2); if(ab.ult) u.ai.ultLock=ab.cd*rand(1.5,2); }
+      cast(u,i,cdir,pt||{x:u.pos.x+cdir.x*(ab.range||4),z:u.pos.z+cdir.z*(ab.range||4)}); return; }
   }
 }
 function tryEscape(u){
@@ -1819,17 +1842,21 @@ function nearestCamp(u){ let best=null,bs=1e9;
   return best; }
 function aiThink(u,dt){
   const ai=u.ai; if(!u.alive){ ai.target=null; u.move.x=u.move.z=0; return; }
-  const hpf=u.hp/u.maxHp, own=FOUNT[u.team], foe=FOUNT[1-u.team];
-  if(hpf<.28&&!duelMode) ai.retreat=true; if(ai.retreat&&hpf>.9) ai.retreat=false;
-  ai.think-=dt; ai.pathT-=dt; const think=ai.think<=0;
+  const hpf=u.hp/u.maxHp, own=FOUNT[u.team], foe=FOUNT[1-u.team], pro=ai.pro;
+  if(hpf<(pro?.28:.4)&&!duelMode) ai.retreat=true; if(ai.retreat&&hpf>(pro?.9:.85)) ai.retreat=false;
+  ai.think-=dt; ai.pathT-=dt; ai.pendT=(ai.pendT||0)-dt; ai.abCd=(ai.abCd||0)-dt; ai.ultLock=(ai.ultLock||0)-dt; ai.ignoreT=(ai.ignoreT||0)-dt; const think=ai.think<=0;
   if(think){ ai.think=rand(.22,.4);
-    const t=pickTarget(u);
+    let t=pickTarget(u);
+    // reaction time: a new target is noticed only after 0.4-0.8 s
+    if(!pro&&t&&t!==ai.target){ if(ai.pend!==t){ ai.pend=t; ai.pendT=rand(.4,.8); } if(ai.pendT>0) t=ai.target&&ai.target.alive&&!hiddenFrom(ai.target,u.team)?ai.target:null; }
     if(ai.target&&ai.target!==t&&ai.target.alive&&hiddenFrom(ai.target,u.team)) ai.hunt={x:ai.target.pos.x,z:ai.target.pos.z,t:2.5};
     ai.target=t;
     if(u.itemCd<=0&&hpf<.45&&!duelMode) useItem(u);
-    if(ai.retreat) tryEscape(u); else if(t&&!(duelMode&&duelMode.noAb)) tryAbilities(u,t,false);
+    if(ai.retreat) tryEscape(u); else if(t&&!(duelMode&&duelMode.noAb)&&(pro||ai.abCd<=0)) tryAbilities(u,t,false);
   }
   if(ai.hunt){ ai.hunt.t-=dt; if(ai.hunt.t<=0) ai.hunt=null; }
+  // a chase that lasts more than 4 seconds is given up, and that hero is left alone for a while
+  if(!pro&&!duelMode&&ai.target&&ai.target.alive&&distXZ(u.pos,ai.target.pos)>u.def.atk.range+1.5){ ai.chase=(ai.chase||0)+dt; if(ai.chase>4){ ai.ignore=ai.target; ai.ignoreT=6; ai.target=null; ai.chase=0; } } else ai.chase=0;
   let gx,gz; const t=ai.target&&ai.target.alive?ai.target:null;
   if(ai.retreat){ gx=own.x; gz=own.z; }
   else if(t){ const d=distXZ(u.pos,t.pos)||.01, want=u.def.atk.ranged?u.def.atk.range*.8:1.4;
@@ -1848,12 +1875,12 @@ function aiThink(u,dt){
         let cr=null,cd=1e9; for(const k of ai.camp.creeps) if(k.alive){ const d=distXZ(u.pos,k.pos); if(d<cd){cd=d;cr=k;} }
         const want=u.def.atk.ranged?u.def.atk.range*.8:1.4;
         if(cd>want){ gx=cr.pos.x; gz=cr.pos.z; } else { gx=u.pos.x; gz=u.pos.z; }
-        if(think&&cd<6) tryAbilities(u,cr,true);
+        if(think&&cd<6&&(pro||ai.abCd<=0)) tryAbilities(u,cr,true);
       }
     }
     if(ai.mode==='lane'){ const g=laneGoal(u); if(g.tgt){ const d=distXZ(u.pos,g.tgt.pos), want=(u.def.atk.ranged?u.def.atk.range*.85:1.2)+g.tgt.radius; if(d>want){ gx=g.tgt.pos.x; gz=g.tgt.pos.z; } else { gx=u.pos.x; gz=u.pos.z; } } else { gx=g.x; gz=g.z; } }
   }
-  if(!ai.retreat&&!(t&&t.hp<t.maxHp*.25)){ const tw=underTower({x:gx,z:gz},u.team,1.5); if(tw){ const dx=gx-tw.pos.x, dz=gz-tw.pos.z, d=Math.hypot(dx,dz)||1, R=tw.def.atk.range+2; gx=tw.pos.x+dx/d*R; gz=tw.pos.z+dz/d*R; } }
+  if(!ai.retreat&&!(pro&&t&&t.hp<t.maxHp*.25)){ const tw=underTower({x:gx,z:gz},u.team,1.5); if(tw){ const dx=gx-tw.pos.x, dz=gz-tw.pos.z, d=Math.hypot(dx,dz)||1, R=tw.def.atk.range+2; gx=tw.pos.x+dx/d*R; gz=tw.pos.z+dz/d*R; } }
   if(!ai.retreat){ const fd=Math.hypot(gx-foe.x,gz-foe.z); if(fd<10){ const k=10/(fd||1); gx=foe.x+((gx-foe.x)||-Math.sign(foe.x))*k; gz=foe.z+(gz-foe.z)*k; } }
   const mv=navDir(u,gx,gz);
   ai.stuckT-=dt;
@@ -2129,7 +2156,7 @@ function buildSkills(){
   at.innerHTML=svg('sword');
   hookAttack(at,'any'); box.appendChild(at); atkBtn={el:at};
   atkMinis=[['build','tower','Бить только башни, бараки и Трон','X'],['creep','creep','Бить только крипов','C']].map(([mode,icon,label])=>{
-    const b=document.createElement('div'); b.className='amini '+mode; b.setAttribute('role','button'); b.setAttribute('aria-label',label); place(b,C[mode]);
+    const b=document.createElement('div'); b.className='amini '+mode; b.setAttribute('role','button'); b.setAttribute('aria-label',label);
     b.innerHTML=svg(icon); hookAttack(b,mode); box.appendChild(b); return b; });
 }
 // every attack button works only while it is held; the mode decides which enemies count as targets
@@ -2392,11 +2419,11 @@ $('toMenu').addEventListener('click',toMenu);
 window.__arena={get units(){return units;},get player(){return player;},get state(){return state;},startMatch,get pr(){return prCur;},camera,renderer,scene,freeze(){ state='pause'; },camps:()=>camps,towers:()=>towers,sim(n,dt){ for(let i=0;i<n&&state==='play';i++) simStep(dt); },
   groundH,findPath,navBlocked,runes:()=>RUNE_SPOTS,superLane:()=>superLane,get time(){return matchTime;},cull(v){ cullOn=v; },heroes:HEROES,
   // test duel: two bot heroes fight 1 on 1 on an empty lane (no creeps, towers, potions or retreat)
-  duel(a,b,lvl=1,noAb=false,dist=9){
+  duel(a,b,lvl=1,noAb=false,dist=9,proA=false){
     clearMatch(); score=[0,0]; matchTime=0; uid=0; duelMode={noAb}; botPlayer=true; camps=[]; waveT=1e9; runeT=1e9;
     const A=spawnHero(a,0,false,1), B=spawnHero(b,1,false,1), d=dist/2*S2;
     [[A,-20-d,20+d],[B,-20+d,20-d]].forEach(([h,x,z])=>{ h.pos.set(x,0,z); h.prev.copy(h.pos); h.hasteT=0; for(let i=1;i<lvl;i++) levelUp(h); h.hp=h.maxHp; h.mana=h.maxMana; });
-    player=A; const st=state; state='play'; let t=0; while(A.alive&&B.alive&&t<90){ simStep(1/30); t+=1/30; }
+    A.ai.pro=proA; player=A; const st=state; state='play'; let t=0; while(A.alive&&B.alive&&t<90){ simStep(1/30); t+=1/30; }
     const res={w:A.alive===B.alive?-1:A.alive?0:1,t:+t.toFixed(1),hp:[+(A.hp/A.maxHp).toFixed(2),+(B.hp/B.maxHp).toFixed(2)]};
     clearMatch(); player=null; duelMode=null; botPlayer=false; state=st==='play'?'menu':st; return res; },quality(q){ setQuality(q); qFirst=false; perfSkip=1e9; },get q(){return qLevel;},bot(v){ botPlayer=v; },view(v){ dbgCam=v; }};
 requestAnimationFrame(frame);
