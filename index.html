@@ -59,28 +59,50 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 .score .s.a{color:var(--ally)}.score .s.e{color:var(--enemy)}
 .score .mid{display:grid;place-items:center;padding:2px 10px;border-inline:1px solid var(--line);font:500 10px var(--body);color:var(--muted);line-height:1.2;text-transform:uppercase;letter-spacing:.06em}
 .score .mid b{font:15px var(--display);color:var(--fg);letter-spacing:0}
-.me{position:absolute;top:calc(8px + env(safe-area-inset-top,0px));left:calc(18px + var(--mm) + env(safe-area-inset-left,0px));width:min(220px,28vw);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 9px;display:grid;gap:4px}
-.me .nm{display:flex;align-items:center;gap:6px;font:13px var(--display);min-width:0}
-.me .nm b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:400}
-.me .nm span{color:var(--muted);font:500 11px var(--body);white-space:nowrap}
-.lv{flex:none;display:grid;place-items:center;min-width:24px;height:22px;border-radius:6px;background:#2a2108;border:1px solid #6b5520;color:var(--gold);font:13px var(--display)}
-#infoBtn{pointer-events:auto;flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:#16211f;color:var(--fg);font:14px var(--display);cursor:pointer;display:grid;place-items:center;padding:0}
-.bar{position:relative;height:14px;background:#061010;border-radius:4px;overflow:hidden}
+/* small HUD buttons: pause/exit in the corner, scoreboard next to the minimap */
+.hb{position:absolute;pointer-events:auto;cursor:pointer;height:32px;min-width:42px;padding:0 9px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font:12px var(--display);display:grid;place-items:center}
+.hb svg{width:20px;height:20px}
+.hb:active{background:#22302d}
+#escBtn{top:calc(6px + env(safe-area-inset-top,0px));left:calc(6px + env(safe-area-inset-left,0px) * .5)}
+#boardBtn{top:calc(44px + env(safe-area-inset-top,0px));left:calc(12px + var(--mm) + env(safe-area-inset-left,0px) * .5)}
+/* thin health / mana / experience strips at the bottom, between the joystick and the buttons */
+#vit{position:absolute;left:calc(150px + env(safe-area-inset-left,0px));right:calc(360px + env(safe-area-inset-right,0px));bottom:calc(8px + env(safe-area-inset-bottom,0px));display:grid;justify-items:center;gap:3px;opacity:.92}
+#vit>*{width:min(230px,100%);box-sizing:border-box}
+.vn{display:flex;justify-content:space-between;gap:8px;font:500 10.5px var(--body);color:rgba(238,243,239,.78);text-shadow:0 1px 2px #000,0 0 3px #000;white-space:nowrap}
+.vn b{font-weight:600;overflow:hidden;text-overflow:ellipsis}.vn i{font-style:normal;color:var(--gold)}
+/* scoreboard */
+#board{position:fixed;inset:0;z-index:15;display:grid;place-items:center;background:rgba(5,10,9,.35);pointer-events:auto;touch-action:none}
+.bcard{position:relative;background:rgba(12,20,18,.94);border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px;display:grid;gap:10px;max-width:min(640px,94vw);max-height:92vh;overflow:auto}
+#boardX{position:absolute;top:6px;right:6px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#16211f;color:var(--fg);font:15px var(--body);cursor:pointer}
+#boardBody{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin-right:30px}
+#boardBody table{border-collapse:collapse;font:500 12.5px var(--body);min-width:0}
+#boardBody caption{text-align:left;font:14px var(--display);padding:0 0 4px}
+#boardBody caption b{float:right;font-weight:400}
+#boardBody .t0 caption{color:var(--ally)}#boardBody .t1 caption{color:var(--enemy)}
+#boardBody th{font:500 10px var(--body);color:var(--muted);text-transform:uppercase;padding:2px 6px}
+#boardBody td{padding:3px 6px;text-align:center;border-top:1px solid rgba(255,255,255,.06);white-space:nowrap}
+#boardBody .n{text-align:left;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+#boardBody .emb{width:26px;height:26px;border-radius:7px}
+#boardBody tr.me td{background:rgba(243,193,75,.14)}#boardBody tr.me em{font-style:normal;color:var(--gold)}
+#boardBody tr.dead td{opacity:.5}
+@media (max-width:560px){#boardBody{grid-template-columns:1fr}}
+#pauseMain,#pauseAsk{display:grid;gap:14px;justify-items:center}
+.bar{position:relative;height:12px;background:rgba(6,16,16,.62);border-radius:4px;overflow:hidden;outline:1px solid rgba(0,0,0,.35)}
 .bar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(#78e687,#3aa851)}
-.bar.mp{height:10px}.bar.mp i{background:linear-gradient(#6fa6ff,#2e66d4)}
+.bar.mp{height:9px}.bar.mp span{font-size:8px}.bar.mp i{background:linear-gradient(#6fa6ff,#2e66d4)}
 .bar.xp{height:4px;border-radius:2px}.bar.xp i{background:#a58bff}
-.bar span{position:absolute;inset:0;display:grid;place-items:center;font:700 10px var(--body);text-shadow:0 1px 2px #000}
-#mm{position:absolute;top:calc(8px + env(safe-area-inset-top,0px));left:calc(10px + env(safe-area-inset-left,0px));width:var(--mm);height:var(--mm);pointer-events:auto;touch-action:none;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:#14211b;display:block}
+.bar span{position:absolute;inset:0;display:grid;place-items:center;font:600 9px var(--body);color:rgba(255,255,255,.72);text-shadow:0 1px 2px #000}
+#mm{position:absolute;top:calc(44px + env(safe-area-inset-top,0px));left:calc(6px + env(safe-area-inset-left,0px) * .5);width:var(--mm);height:var(--mm);pointer-events:auto;touch-action:none;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:#14211b;display:block}
 .feed{position:absolute;top:calc(8px + env(safe-area-inset-top,0px));right:calc(10px + env(safe-area-inset-right,0px));display:grid;gap:4px;justify-items:end;align-content:start;max-width:30vw}
 @media (max-height:440px){#hud{--mm:122px}}
 @media (pointer:coarse){#mm{opacity:.76}}
-@media (max-width:980px){.score{left:calc(26px + var(--mm) + min(220px,28vw) + env(safe-area-inset-left,0px));transform:none}.score .s{min-width:38px;padding:5px 9px}.feed{max-width:24vw}}
+@media (max-width:980px){.score .s{min-width:38px;padding:5px 9px}.feed{max-width:24vw}}
 .feed div{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font:500 11px var(--body);white-space:nowrap;animation:fin .25s ease-out}
 .feed .A{color:var(--ally)}.feed .E{color:var(--enemy)}.feed .P{color:var(--gold)}.feed .N{color:var(--neutral)}
 @keyframes fin{from{transform:translateX(20px);opacity:0}}
-@media (max-width:640px){#hud{--mm:110px}.score{left:50%;transform:translateX(-50%)}.me,#mm,.feed{top:calc(52px + env(safe-area-inset-top,0px))}.me{width:min(170px,40vw)}}
+@media (max-width:640px){#hud{--mm:110px}.feed{top:calc(52px + env(safe-area-inset-top,0px))}#vit{left:calc(10px + env(safe-area-inset-left,0px));right:auto;bottom:calc(280px + env(safe-area-inset-bottom,0px));width:150px}}
 
-#skills{position:absolute;right:env(safe-area-inset-right,0px);bottom:env(safe-area-inset-bottom,0px);width:300px;height:270px;pointer-events:none}
+#skills{position:absolute;right:calc(22px + env(safe-area-inset-right,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));width:300px;height:270px;pointer-events:none}
 .sk{position:absolute;width:60px;height:60px;border-radius:50%;padding:0;border:2px solid #0b1110;pointer-events:auto;touch-action:none;cursor:pointer;color:var(--g);
   background:radial-gradient(circle at 35% 28%,var(--c2),var(--c1) 70%);display:grid;place-items:center;
   box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.12);transition:scale .16s ease-out,box-shadow .16s ease-out}
@@ -99,8 +121,8 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 @keyframes flash{0%{box-shadow:0 0 0 0 rgba(255,255,255,.9)}100%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}
 @keyframes denyf{0%{box-shadow:0 0 0 4px #ff5468}100%{box-shadow:0 0 0 4px rgba(255,84,104,0)}}
 /* attack: a quarter-circle sector pressed into the bottom-right corner (square towards the corner, round towards the thumb) */
-.apad{position:absolute;right:0;bottom:0;width:152px;height:152px;border-radius:100% 0 0 0;overflow:hidden;pointer-events:auto;touch-action:none;cursor:pointer;
-  border:solid rgba(255,170,130,.85);border-width:2px 0 0 2px;background:radial-gradient(circle at 100% 100%,#ffa477 0,#e0502e 48%,#8a2412 100%);
+.apad{position:absolute;right:0;bottom:0;width:152px;height:152px;border-radius:100% 28px 28px 28px;overflow:hidden;pointer-events:auto;touch-action:none;cursor:pointer;
+  border:2px solid rgba(255,170,130,.85);background:radial-gradient(circle at 100% 100%,#ffa477 0,#e0502e 48%,#8a2412 100%);
   box-shadow:0 0 22px -6px rgba(255,90,50,.75),inset 0 0 0 2px rgba(255,255,255,.14);transform-origin:100% 100%;transition:scale .16s ease-out,filter .16s ease-out}
 .apad svg{position:absolute;right:32px;bottom:32px;width:58px;height:58px;color:#fff3ea;filter:drop-shadow(0 2px 2px rgba(0,0,0,.55))}
 
@@ -121,7 +143,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 #knob{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9e7e2,#7d948c);box-shadow:0 2px 6px rgba(0,0,0,.5)}
 #death{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);text-align:center;font:clamp(20px,4vw,32px) var(--display);text-shadow:0 3px 0 #000}
 #death span{display:block;font:500 14px var(--body);color:var(--muted);text-shadow:none;margin-top:4px}
-#hint{position:absolute;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font-size:11.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 10px;white-space:nowrap}
+#hint{position:absolute;left:50%;bottom:calc(66px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font-size:11.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 10px;white-space:nowrap}
 #rot{position:absolute;left:50%;top:calc(100px + env(safe-area-inset-top,0px));transform:translateX(-50%);font-size:12px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 10px;white-space:nowrap;animation:fadeout 6s forwards}
 @keyframes fadeout{80%{opacity:1}100%{opacity:0}}
 #vig{position:absolute;inset:0;box-shadow:inset 0 0 120px rgba(255,40,60,.55);opacity:0}
@@ -200,7 +222,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 #how .panel{font-size:13.5px;line-height:1.6;color:var(--muted)}
 #how .panel b{color:var(--fg)}
 #how h2{margin:0;font:22px var(--display);color:var(--fg);font-weight:400}
-#end{display:grid;place-items:center;background:rgba(5,10,9,.72)}
+#end,#pause{display:grid;place-items:center;background:rgba(5,10,9,.72)}
 .card{background:var(--panel-solid);border:1px solid var(--line);border-radius:16px;padding:26px 22px;display:grid;gap:14px;justify-items:center;text-align:center;margin:16px;max-width:420px}
 .card h2{margin:0;font:clamp(34px,8vw,52px)/1 var(--display);text-transform:uppercase;font-weight:400}
 .card h2.win{color:var(--gold)}.card h2.lose{color:var(--enemy)}
@@ -214,8 +236,10 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
   <div id="zone"></div>
   <div id="vig"></div><div id="flashW"></div>
   <div class="score"><div class="s a" id="sA">0</div><div class="mid"><b id="clock">0:00</b>убийства</div><div class="s e" id="sE">0</div></div>
-  <div class="me">
-    <div class="nm"><span class="lv" id="meLv">1</span><b id="meName">—</b><span id="meKD">0 / 0</span><button id="infoBtn" aria-label="Пауза и описание способностей">i</button></div>
+  <button id="escBtn" class="hb" aria-label="Пауза и выход">Esc</button>
+  <button id="boardBtn" class="hb" aria-label="Таблица игроков"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+  <div id="vit">
+    <div class="vn"><b id="meName">—</b><span>ур. <i id="meLv">1</i></span></div>
     <div class="bar"><i id="hpF"></i><span id="hpT"></span></div>
     <div class="bar mp"><i id="mpF"></i><span id="mpT"></span></div>
     <div class="bar xp" title="Опыт"><i id="xpF"></i></div>
@@ -256,7 +280,22 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
   <div class="wrap">
     <div id="infoCard" class="panel"></div>
 
-    <div class="row"><button class="btn" id="resume">Продолжить</button><button class="btn ghost" id="quit">Выйти в меню</button></div>
+    <div class="row"><button class="btn" id="resume">Продолжить</button></div>
+  </div>
+</div>
+
+<div id="pause" class="ov" hidden>
+  <div class="card">
+    <div id="pauseMain"><h2>Пауза</h2><div class="row"><button class="btn" id="pResume">Продолжить</button><button class="btn ghost" id="pQuit">Выйти в лобби</button></div></div>
+    <div id="pauseAsk" hidden><p>Точно выйти в лобби? Этот матч будет потерян.</p><div class="row"><button class="btn" id="pNo">Остаться</button><button class="btn ghost" id="pYes">Да, выйти</button></div></div>
+  </div>
+</div>
+
+<div id="board" hidden>
+  <div class="bcard">
+    <button id="boardX" aria-label="Закрыть">✕</button>
+    <div id="boardBody"></div>
+    <div class="row"><button class="chip" id="infoBtn">i · Мой герой и способности</button></div>
   </div>
 </div>
 
@@ -485,15 +524,18 @@ const riverV = (x,z) => (x-z)*S2 - riverOff((x+z)*S2);   // signed distance from
 const CROSS = [-93,0,93];                                // river coordinate of the causeways (top lane, mid lane, bottom lane)
 const crossK = u => { let k=1; for(const c of CROSS) k=Math.min(k,sstep(3.5,8,Math.abs(u-c))); return k; };
 // the boss grotto sits on the river between the mid and the top lane; its only mouth opens downstream, towards the centre
-const CAVE = {x:-32.5,z:-32.5,r:9.5,wall:12}, BASE_E = 41, BASE_H = 2.4, WATER_Y = -.72, BANK = 8.6;
+const CAVE = {x:-32.5,z:-32.5,r:9.5,wall:12}, BASE_E = 41, BASE_H = 2.4, WATER_Y = -.72, BANK = 8.6, RAMP = 4.5, CHAMF = 7.5;
+// distance outside a base plateau: a square whose corner towards the mid lane is cut off straight, so the mid stairs are a flat ramp
+const baseD = (x,z,sg) => { const ex=x*sg+BASE_E, ez=BASE_E-z*sg; return Math.max(ex,ez,(ex+ez)*S2+CHAMF); };
 function groundH(x,z){
   const u=(x+z)*S2, av=Math.abs((x-z)*S2-riverOff(u));
   let h=0;
   if(av<11) h=-1.3*(1-sstep(4.5,11,av))*(.36+.64*crossK(u))*sstep(CAVE.r-1.5,CAVE.r+3,Math.hypot(x-CAVE.x,z-CAVE.z));
-  for(let t=0;t<2;t++){ const sg=t?-1:1, ex=x*sg+BASE_E, ez=BASE_E-z*sg, d=ex>0&&ez>0?Math.hypot(ex,ez):Math.max(ex,ez);
-    if(d<8){ const bf=1-sstep(0,8,d); h=h*(1-bf)+BASE_H*bf; } }
+  for(let t=0;t<2;t++){ const d=baseD(x,z,t?-1:1); if(d<RAMP){ const bf=1-sstep(0,RAMP,d); h=h*(1-bf)+BASE_H*bf; } }
   return h;
 }
+// units walk a little above the smooth ramp on the stairs, at the height of the step tops
+function unitY(x,z){ let h=groundH(x,z); for(let t=0;t<2;t++){ const d=baseD(x,z,t?-1:1); if(d>0&&d<RAMP) h+=.25*Math.sin(Math.PI*d/RAMP); } return h; }
 const gY = p => groundH(p.x,p.z);
 const LANES = {
   top:[[-63,63],[-70,50],[-70,-62],[-62,-70],[50,-70],[63,-63]],
@@ -510,7 +552,7 @@ function lanePoint(L,s){ let acc=0;
   for(let i=0;i<L.length-1;i++){ const a=L[i],b=L[i+1],len=Math.hypot(b.x-a.x,b.z-a.z); if(s<=acc+len||i===L.length-2){ const t=Math.max(0,Math.min(1,(s-acc)/len)); return {x:a.x+(b.x-a.x)*t,z:a.z+(b.z-a.z)*t}; } acc+=len; } }
 // rectangles: cliff:1 = base cliff (the gaps between them are the stairs), f:1 = a row of trees, log:1 = a fallen trunk, otherwise a stone wall
 const WALLS = mirror([
-  {x:-79.5,z:37,w:7,d:2.6,cliff:1},{x:-55.5,z:37,w:17,d:2.6,cliff:1},{x:-37,z:55.5,w:2.6,d:17,cliff:1},{x:-37,z:79.5,w:2.6,d:7,cliff:1},
+  {x:-79.5,z:38.8,w:7,d:2.6,cliff:1},{x:-55.5,z:38.8,w:17,d:2.6,cliff:1},{x:-38.8,z:55.5,w:2.6,d:17,cliff:1},{x:-38.8,z:79.5,w:2.6,d:7,cliff:1},
   // jungle between the top lane and the mid lane: walls cut it into pockets around the camps
   {x:-48,z:16,w:2.2,d:9},{x:-57,z:12,w:8,d:2},{x:-48,z:-4,w:9,d:2.2,f:1},{x:-33,z:-4,w:2.2,d:10},{x:-33.5,z:12,w:2,d:8},{x:-18,z:6,w:2.2,d:8,f:1},
   {x:-62,z:10,w:2.2,d:10,f:1},{x:-62,z:-28,w:2.2,d:10},{x:-50,z:-24,w:10,d:2.2,f:1},{x:-52,z:-33,w:2,d:8},{x:-50,z:29,w:6,d:1.2,log:1},
@@ -523,10 +565,11 @@ const ROCKS = mirror([
   {x:-50,z:-12,r:1.6,k:'b'},{x:-14,z:30,r:1.7,k:'b'},{x:-8,z:16,r:1.5,k:'b'},
   {x:-38,z:24,r:.75,k:'c'},{x:-35,z:21,r:.75,k:'c'},{x:-41,z:21,r:.75,k:'c'},{x:-38,z:18,r:.75,k:'c'},{x:-2,z:61,r:.75,k:'c'},{x:2,z:61,r:.75,k:'c'},{x:0,z:57.5,r:.75,k:'c'},
   {x:-46,z:-17,r:.8,k:'t'},{x:-43,z:-19,r:.8,k:'t'},{x:-45,z:-21,r:.8,k:'t'},{x:2,z:22,r:.8,k:'t'},{x:5,z:24,r:.8,k:'t'},{x:3,z:26,r:.8,k:'t'}
-]);
+].concat([-1,1].flatMap(e=>[.6,2.25,3.9].map(t=>{ const s=-CHAMF+t; return {x:-BASE_E+s*S2+e*6.7*S2,z:BASE_E-s*S2+e*6.7*S2,r:.85,k:'rail'}; }))));   // side rails of the mid stairs
 { const n=24, a0=Math.PI/4;
   for(let i=2;i<=n-2;i++){ const a=a0+i/n*TAU, edge=i===2||i===n-2; ROCKS.push({x:CAVE.x+Math.cos(a)*CAVE.wall,z:CAVE.z+Math.sin(a)*CAVE.wall,r:edge?2.9:2.3,k:'cave',edge,front:Math.sin(a)>.15}); }
-  for(const sg of [-1,1]) for(let u=-113;u<=113;u+=2.3){ if(CROSS.some(c=>Math.abs(u-c)<7.5)) continue;
+  // bank walls with regular gaps: four rocks, then an opening down to the water, the same on both banks
+  for(const sg of [-1,1]) for(let u=-113,i=0;u<=113;u+=2.3,i++){ if(CROSS.some(c=>Math.abs(u-c)<7.5)||i%7>3) continue;
     const v=riverOff(u)+sg*BANK, x=(u+v)*S2, z=(u-v)*S2; if(Math.abs(x)>ARENA.hx-.5||Math.abs(z)>ARENA.hz-.5||Math.hypot(x-CAVE.x,z-CAVE.z)<CAVE.wall+3) continue;
     ROCKS.push({x,z,r:1.35,k:'fence'}); } }
 const BUSHES = mirror([
@@ -538,14 +581,14 @@ const CAMPDEF = mirror([
 ]).concat([{x:CAVE.x,z:CAVE.z,type:'boss'}]);
 const CAMPCOMP = {small:['small','small','small'],medium:['harpy','harpy'],big:['big','small','small'],hard:['beetle','beetle'],ancient:['ancient'],boss:['boss']};
 // a camp attacks any hero that steps inside this radius
-const aggroR = c => c.type==='boss'?CAVE.r:c.type==='ancient'?7.5:6.5;
+const aggroR = c => c.type==='boss'?CAVE.r:c.type==='ancient'?5:4.2;   // equals the ring drawn on the ground around the camp
 // structures of the green team; the red team gets the point-mirrored copy
 const TOWERDEF = [
   {lane:'top',tier:1,x:-70,z:-22},{lane:'top',tier:2,x:-70,z:10},{lane:'top',tier:3,x:-70,z:44},
-  {lane:'mid',tier:1,x:-14,z:14},{lane:'mid',tier:2,x:-29,z:29},{lane:'mid',tier:3,x:-44,z:44},
+  {lane:'mid',tier:1,x:-14,z:14},{lane:'mid',tier:2,x:-29,z:29},{lane:'mid',tier:3,x:-49,z:49},
   {lane:'bot',tier:1,x:22,z:70},{lane:'bot',tier:2,x:-10,z:70},{lane:'bot',tier:3,x:-44,z:70},
   {lane:'top',kind:'melee',x:-75,z:51},{lane:'top',kind:'ranged',x:-65,z:51},
-  {lane:'mid',kind:'melee',x:-54.4,z:45.6},{lane:'mid',kind:'ranged',x:-45.6,z:54.4},
+  {lane:'mid',kind:'melee',x:-57,z:47},{lane:'mid',kind:'ranged',x:-47,z:57},
   {lane:'bot',kind:'melee',x:-51,z:65},{lane:'bot',kind:'ranged',x:-51,z:75},
   {lane:null,tier:0,x:-63,z:63}
 ];
@@ -646,8 +689,8 @@ function groundCanvas(){
   for(let i=0;i<26000;i++){ const px=rand(0,N), pz=rand(0,N), a=rand(-.5,.5)-Math.PI/2, l=rand(3,7); g.strokeStyle=i%3?'rgba(34,62,30,.3)':'rgba(170,200,110,.22)'; g.lineWidth=rand(1,1.8); g.beginPath(); g.moveTo(px,pz); g.lineTo(px+Math.cos(a)*l,pz+Math.sin(a)*l); g.stroke(); }
   // bases: a rocky cliff band around the plateau, a stone plaza on top
   for(let t=0;t<2;t++){ const sg=t?-1:1, E=BASE_E, Q=(x,z)=>P(x*sg,z*sg);
-    g.beginPath(); [[-GEXT,E-4],[-E+4,E-4],[-E+4,GEXT]].forEach(([x,z],i)=>{ const [px,pz]=Q(x,z); i?g.lineTo(px,pz):g.moveTo(px,pz); });
-    g.lineWidth=9*S; g.strokeStyle='rgba(112,106,94,.92)'; g.stroke(); g.lineWidth=4*S; g.strokeStyle='rgba(84,80,72,.5)'; g.stroke();
+    g.beginPath(); [[-GEXT,E-2.3],[-E+2.3,E-2.3],[-E+2.3,GEXT]].forEach(([x,z],i)=>{ const [px,pz]=Q(x,z); i?g.lineTo(px,pz):g.moveTo(px,pz); });
+    g.lineWidth=5.2*S; g.strokeStyle='rgba(112,106,94,.92)'; g.stroke(); g.lineWidth=2.4*S; g.strokeStyle='rgba(84,80,72,.5)'; g.stroke();
     const [ax,az]=Q(-GEXT,E), [bx,bz]=Q(-E,GEXT), x0=Math.min(ax,bx), z0=Math.min(az,bz), w=Math.abs(bx-ax), h=Math.abs(bz-az);
     g.fillStyle=t?'rgba(132,106,100,.94)':'rgba(104,124,114,.94)'; g.fillRect(x0,z0,w,h);
     g.strokeStyle='rgba(0,0,0,.16)'; g.lineWidth=2; for(let k=0;k<=w;k+=3*S){ g.beginPath(); g.moveTo(x0+k,z0); g.lineTo(x0+k,z0+h); g.stroke(); g.beginPath(); g.moveTo(x0,z0+k); g.lineTo(x0+w,z0+k); g.stroke(); }
@@ -780,6 +823,7 @@ function buildArena(){
   for(const c of ROCKS){
     if(c.k==='b'){ rocks.push(rock(c.x,c.z,c.r*1.08,rand(1.05,1.3))); for(let i=0;i<3;i++){ const a=rand(0,TAU); rocks.push(rock(c.x+Math.cos(a)*c.r*1.1,c.z+Math.sin(a)*c.r*1.1,rand(.4,.7),rand(.8,1.1))); } }
     else if(c.k==='fence'){ rocks.push(rock(c.x+rand(-.2,.2),c.z+rand(-.2,.2),rand(1.15,1.45),rand(.95,1.5))); if(Math.random()<.35) rocks.push(rock(c.x+rand(-.5,.5),c.z+rand(-.5,.5),rand(.45,.7),rand(.8,1.1),1,1.5)); }
+    else if(c.k==='rail'){}
     else if(c.k==='c') cols.push({x:c.x,z:c.z,r:c.r,h:rand(1.6,4.4)});
     else if(c.k==='t') trees.push({x:c.x,z:c.z,s:rand(1.7,2.1)});
     else if(c.front) caveFront.push(rock(c.x,c.z,c.r*1.12,c.edge?2.3:rand(.9,1.25)));
@@ -817,11 +861,14 @@ function buildArena(){
     instChunks(new T.CylinderGeometry(1,1.12,1,14),toon(0xb9b3a0),cols.concat(posts),(d,c)=>{ d.position.set(c.x,groundH(c.x,c.z)+c.h/2-.1,c.z); d.scale.set(c.r*.8,c.h,c.r*.8); },{cast:1,recv:1});
     instChunks(new T.BoxGeometry(1,1,1),toon(0xa39c88),cols.concat(caps.map(c=>Object.assign({cap:1},c))),(d,c)=>{ const g=groundH(c.x,c.z); if(c.cap){ d.position.set(c.x,g+c.h+.05,c.z); d.scale.set(c.r*2,.34,c.r*2); } else { d.position.set(c.x,g+.12,c.z); d.scale.set(c.r*2.3,.36,c.r*2.3); } d.rotation.y=rand(0,.4); },{cast:1}); }
   // stairs up to the base plateaus: the ground itself stays a smooth ramp, the steps are laid over it
-  { const NS=7, D=8/NS;
-    for(const sg of [1,-1]) for(let i=0;i<NS;i++){ const t=(i+.5)*D, sh=i%2;
-      slabs.push({x:-70*sg,z:(BASE_E-t)*sg,w:12.4,d:D,ry:0,sh}); slabs.push({x:(-BASE_E+t)*sg,z:70*sg,w:D,d:12.4,ry:0,sh});
-      slabs.push({x:(-BASE_E+t*S2)*sg,z:(BASE_E-t*S2)*sg,w:14,d:D,ry:Math.PI/4,sh}); }
-    instChunks(new T.BoxGeometry(1,1,1),toon(0xffffff),slabs,(d,s,col)=>{ d.position.set(s.x,groundH(s.x,s.z)-.13,s.z); d.rotation.y=s.ry; d.scale.set(s.w,.5,s.d); col.setHex(s.sh?0x8f989e:0x737c83); },{recv:1,color:1}); }
+  // five wide steps across the whole entrance, with stone blocks along both sides
+  { const NS=5, D=RAMP/NS, W=12, WM=11.8, q=-Math.PI/4;
+    for(const sg of [1,-1]) for(let i=0;i<NS;i++){ const t=(i+.5)*D, sh=i%2, s=-CHAMF+t, mx=-BASE_E+s*S2, mz=BASE_E-s*S2;
+      slabs.push({x:-70*sg,z:(BASE_E-t)*sg,w:W,d:D+.04,ry:0,sh}); slabs.push({x:(-BASE_E+t)*sg,z:70*sg,w:D+.04,d:W,ry:0,sh});
+      slabs.push({x:mx*sg,z:mz*sg,w:WM,d:D+.04,ry:q,sh});
+      for(const e of [-1,1]){ slabs.push({x:(-70+e*(W/2+.3))*sg,z:(BASE_E-t)*sg,w:1,d:D+.04,ry:0,rail:1}); slabs.push({x:(-BASE_E+t)*sg,z:(70+e*(W/2+.3))*sg,w:D+.04,d:1,ry:0,rail:1});
+        slabs.push({x:(mx+e*(WM/2+.5)*S2)*sg,z:(mz+e*(WM/2+.5)*S2)*sg,w:1,d:D+.04,ry:q,rail:1}); } }
+    instChunks(new T.BoxGeometry(1,1,1),toon(0xffffff),slabs,(d,s,col)=>{ const hh=s.rail?1.7:.5; d.position.set(s.x,groundH(s.x,s.z)+(s.rail?.5:0),s.z); d.rotation.y=s.ry; d.scale.set(s.w,hh,s.d); col.setHex(s.rail?0x5b646a:s.sh?0x98a1a7:0x7a838a); },{recv:1,cast:1,color:1}); }
   // grass tufts and flowers
   const free=(x,z)=>{ if(inStatic(x,z,.4)) return false; if(Math.abs(riverV(x,z))<BANK+1) return false; if(Math.hypot(x-CAVE.x,z-CAVE.z)<15) return false;
     for(let t=0;t<2;t++){ const sg=t?-1:1; if(x*sg<-BASE_E+9&&z*sg>BASE_E-9) return false; } return true; };
@@ -841,7 +888,8 @@ function buildArena(){
   // camps: a ring of stones and a small fire
   { const stones=[], sticks=[]; const flameGeo=new T.ConeGeometry(.3,.9,7); flameGeo.translate(0,.45,0);
     for(const c of CAMPDEF){ if(c.type==='boss') continue;
-      const R=c.type==='ancient'?4:3.3;
+      const R=aggroR(c);
+      { const rg=new T.Mesh(new T.RingGeometry(R-.16,R,64),fadeMat(0xffd27a,.6)); rg.rotation.x=-Math.PI/2; rg.position.set(c.x,groundH(c.x,c.z)+.05,c.z); scene.add(rg); }
       for(let i=0;i<9;i++){ const a=i/9*TAU+rand(-.2,.2); stones.push({x:c.x+Math.cos(a)*R,z:c.z+Math.sin(a)*R,s:rand(.26,.44)}); }
       const fx=c.x+(c.x>0?1.9:-1.9), fz=c.z+(c.z>0?1.9:-1.9), fy=groundH(fx,fz);
       for(let i=0;i<3;i++) sticks.push({x:fx,z:fz,a:i/3*Math.PI});
@@ -1220,7 +1268,7 @@ function makeUnit(d,team){
   return {id:uid++,def:d,team,isPlayer:false,isCreep:false,pos:new T.Vector3(),prev:new T.Vector3(),vel:new T.Vector3(),face:0,faceLock:0,move:{x:0,z:0},moveAmt:0,walkPh:0,speedNow:0,
     maxHp:d.hp,hp:d.hp,maxMana:d.mana,mana:d.mana,radius:d.radius,cds:[0,0,0,0],itemCd:0,atkT:rand(0,.5),S:1,
     level:1,xp:0,atkMul:1,abMul:1,
-    hasteT:0,hasteMul:1,dmgT:0,shield:0,shieldT:0,buffKey:'',culled:false,stun:0,slowT:0,slowMul:1,reduceT:0,reduceMul:1,ampT:0,ampMul:1,rageT:0,rageAs:0,rageLs:0,whirl:null,reveal:0,alive:true,respawn:0,kills:0,deaths:0,lastHit:null,lastHitT:0,fdmg:0,removeT:0,
+    hasteT:0,hasteMul:1,dmgT:0,shield:0,shieldT:0,buffKey:'',culled:false,stun:0,slowT:0,slowMul:1,reduceT:0,reduceMul:1,ampT:0,ampMul:1,rageT:0,rageAs:0,rageLs:0,whirl:null,reveal:0,alive:true,respawn:0,kills:0,deaths:0,assists:0,hitBy:{},lastHit:null,lastHitT:0,fdmg:0,removeT:0,
     channel:null,dash:null,anim:{atk:0,cast:0,dead:0},inBush:null,hidT:[false,false,false],atkTarget:null,lastAtk:null,lastAtkT:0,
     ai:{think:rand(0,.3),target:null,retreat:false,returning:false,roam:null,roamT:0,mode:null,modeT:0,camp:null,side:Math.random()<.5?1:-1,stuckT:.6,stuckPos:new T.Vector3(),unstick:0,hunt:null,path:null,pathT:0,pi:0,pgx:0,pgz:0}};
 }
@@ -1365,6 +1413,7 @@ function damage(t,amt,src,isAb){
   if(t.isCreep&&t.camp&&isHero(src)) aggroCamp(t.camp,src);
   // a hero who hits an enemy hero draws the nearby towers and lane creeps of that hero's team for a moment
   if(isHero(t)&&isHero(src)&&src.team!==t.team){
+    t.hitBy[src.id]=matchTime;
     for(const tw of towers) if(tw.alive&&tw.team===t.team&&distXZ(tw.pos,src.pos)<=tw.def.atk.range+1){ tw.aggro=src; tw.aggroT=2.5; }
     for(const k of units) if(k.alive&&k.isLane&&k.team===t.team&&distXZ(k.pos,src.pos)<6.5){ k.ai.target=src; k.ai.aggroT=2.5; } }
   if(t.hp<=0) kill(t,src);
@@ -1407,6 +1456,9 @@ function kill(t,src){
   t.deaths++; t.respawn=5+t.level*1.5;
   const killer = isHero(src)&&src.team!==t.team ? src : (t.lastHitT>0&&isHero(t.lastHit)&&t.lastHit.team!==t.team ? t.lastHit : null);
   if(killer){ killer.kills++; score[killer.team]++; addXP(killer,100+15*t.level); }
+  // assist: every other enemy hero who damaged the victim during the last 10 seconds
+  for(const h of units) if(isHero(h)&&h.team!==t.team&&h!==killer&&t.hitBy[h.id]>matchTime-10) h.assists++;
+  t.hitBy={};
   feed(killer||(src&&src.isTower?'tower':src&&src.isCreep?'neutral':null),t); updateScore();
 }
 function stunUnit(o,t){ o.stun=Math.max(o.stun,t); o.channel=null; if(o.dash&&!o.dash.leap) o.dash=null; }
@@ -1906,7 +1958,7 @@ function updateUnit(u,dt){
     autoAttack(u);
   }
   if(!(u.dash&&u.dash.leap)) collide(u.pos,u.radius);
-  u.pos.y=groundH(u.pos.x,u.pos.z);
+  u.pos.y=unitY(u.pos.x,u.pos.z);
   u.vel.subVectors(u.pos,u.prev).divideScalar(Math.max(dt,1e-4));
   u.moveAmt+=((speed>.1?1:0)-u.moveAmt)*Math.min(1,dt*10); u.speedNow=speed;
   u.inBush=bushAt(u.pos.x,u.pos.z);
@@ -2036,7 +2088,7 @@ addEventListener('keydown',e=>{
   const idx={KeyQ:0,KeyW:1,KeyE:2,KeyR:3,Digit1:0,Digit2:1,Digit3:2,Digit4:3}[e.code];
   if(e.code.startsWith('Arrow')||idx!=null||e.code==='Space') e.preventDefault();
   if(e.repeat) return; keys[e.code]=true;
-  if(e.code==='Escape'){ if(aim){ finishAim(false); return; } if(state==='play'){ openInfo(); return; } if(state==='pause'){ closeInfo(); return; } }
+  if(e.code==='Escape'){ if(aim){ finishAim(false); return; } if(state==='play'){ if(!$('board').hidden){ closeBoard(); return; } openPause(); return; } if(state==='pause'){ resumeGame(); return; } }
   if(state!=='play'||!player) return;
   camPan=null;
   if(idx!=null){
@@ -2114,7 +2166,7 @@ function updateHud(){
   $('hpF').style.width=(u.hp/u.maxHp*100)+'%'; $('hpT').textContent=Math.ceil(u.hp)+' / '+u.maxHp;
   $('mpF').style.width=(u.mana/u.maxMana*100)+'%'; $('mpT').textContent=Math.floor(u.mana)+' / '+u.maxMana;
   $('xpF').style.width=(u.level>=MAXLVL?100:u.xp/xpNeed(u.level)*100)+'%';
-  $('meLv').textContent=u.level; $('meKD').textContent=u.kills+' / '+u.deaths;
+  $('meLv').textContent=u.level; if(!$('board').hidden&&Math.abs(time-boardT)>.5){ boardT=time; renderBoard(); }
   const s=Math.floor(matchTime); $('clock').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
   btns.forEach((b,i)=>{
     const isItem=i===4, cd=isItem?u.itemCd:u.cds[i], total=isItem?ITEM.cd:u.def.abilities[i].cd;
@@ -2199,17 +2251,34 @@ function drawMinimap(){
     mctx.strokeStyle=camPan?'#fff':'rgba(255,255,255,.6)'; mctx.lineWidth=camPan?1.6:1; mctx.strokeRect(x0,z0,x1-x0,z1-z0); }
 }
 
-/* ================= PAUSE / INFO ================= */
-function openInfo(){
-  if(state!=='play') return; state='pause'; if(aim) finishAim(false); atkAim=null; atkKey=false; stick.active=false; stick.x=stick.y=0; stickRest();
-  const u=player; $('infoCard').innerHTML=detailHTML(u.def,u.abMul,u.atkMul,u.level,u.maxHp);
-  document.querySelectorAll('.apad.aim,.amini.aim').forEach(b=>b.classList.remove('aim')); $('info').hidden=false;
+/* ================= PAUSE / INFO / SCOREBOARD ================= */
+function pauseGame(){
+  if(state!=='play') return false; state='pause'; camPan=null; if(aim) finishAim(false); atkAim=null; atkKey=false; stick.active=false; stick.x=stick.y=0; stickRest();
+  document.querySelectorAll('.apad.aim,.amini.aim').forEach(b=>b.classList.remove('aim')); closeBoard(); return true;
 }
-function closeInfo(){ if(state!=='pause') return; $('info').hidden=true; state='play'; last=performance.now(); }
-$('infoBtn').addEventListener('pointerdown',e=>{ e.stopPropagation(); }); $('infoBtn').addEventListener('click',openInfo);
-$('resume').addEventListener('click',closeInfo);
-
-$('quit').addEventListener('click',()=>{ $('info').hidden=true; toMenu(); });
+function resumeGame(){ if(state!=='pause') return; $('info').hidden=true; $('pause').hidden=true; state='play'; last=performance.now(); }
+function openInfo(){ if(!pauseGame()) return; const u=player; $('infoCard').innerHTML=detailHTML(u.def,u.abMul,u.atkMul,u.level,u.maxHp); $('info').hidden=false; }
+// pause menu: leaving the match asks for a confirmation
+function openPause(){ if(!pauseGame()) return; $('pauseAsk').hidden=true; $('pauseMain').hidden=false; $('pause').hidden=false; }
+$('escBtn').addEventListener('pointerdown',e=>{ e.stopPropagation(); }); $('escBtn').addEventListener('click',openPause);
+$('resume').addEventListener('click',resumeGame); $('pResume').addEventListener('click',resumeGame);
+$('pQuit').addEventListener('click',()=>{ $('pauseMain').hidden=true; $('pauseAsk').hidden=false; });
+$('pNo').addEventListener('click',()=>{ $('pauseAsk').hidden=true; $('pauseMain').hidden=false; });
+$('pYes').addEventListener('click',()=>{ $('pause').hidden=true; toMenu(); });
+// scoreboard: both teams with level and kills / deaths / assists; the match keeps running while it is open
+let boardT=0;
+function renderBoard(){
+  const hs=units.filter(isHero);
+  const row=h=>`<tr class="${h.isPlayer?'me':''}${h.alive?'':' dead'}"><td><span class="emb" style="${heroStyle(h.def)}">${svg(h.def.abilities[3].type)}</span></td><td class="n">${h.isPlayer?'<em>Вы</em> · ':''}${h.def.name}</td><td>${h.level}</td><td>${h.kills}</td><td>${h.deaths}</td><td>${h.assists}</td></tr>`;
+  const tbl=(team,title)=>`<table class="t${team}"><caption><span>${title}</span><b>${score[team]}</b></caption><thead><tr><th></th><th class="n">Герой</th><th>Ур.</th><th title="Убийства">K</th><th title="Смерти">D</th><th title="Помощь">A</th></tr></thead><tbody>${hs.filter(h=>h.team===team).map(row).join('')}</tbody></table>`;
+  $('boardBody').innerHTML=tbl(0,'Зелёные')+tbl(1,'Красные');
+}
+function openBoard(){ if(state!=='play') return; renderBoard(); boardT=time; $('board').hidden=false; }
+function closeBoard(){ $('board').hidden=true; }
+$('boardBtn').addEventListener('pointerdown',e=>{ e.stopPropagation(); }); $('boardBtn').addEventListener('click',()=>{ if($('board').hidden) openBoard(); else closeBoard(); });
+$('board').addEventListener('pointerdown',e=>{ e.stopPropagation(); if(e.target===$('board')) closeBoard(); });
+$('boardX').addEventListener('click',closeBoard);
+$('infoBtn').addEventListener('click',openInfo);
 
 /* ================= CAMERA & LOOP ================= */
 const panV=new T.Vector3();
@@ -2301,7 +2370,7 @@ function startMatch(){
   updateInvuln(); waveT=4;
   camTarget.copy(player.pos);
   $('meName').textContent=player.def.name;
-  $('menu').hidden=true; $('end').hidden=true; $('info').hidden=true; $('how').hidden=true; $('hud').hidden=false;
+  $('menu').hidden=true; $('end').hidden=true; $('info').hidden=true; $('pause').hidden=true; closeBoard(); $('how').hidden=true; $('hud').hidden=false;
   buildSkills(); updateScore(); mmSize();
   $('hint').hidden=isTouch; stickEl.hidden=!isTouch; stickRest();
   const old=$('rot'); if(old) old.remove();
@@ -2310,13 +2379,13 @@ function startMatch(){
   state='play';
 }
 function endMatch(winTeam){
-  if(state!=='play'&&state!=='pause') return; $('info').hidden=true; state='end'; if(aim) finishAim(false); atkAim=null;
+  if(state!=='play'&&state!=='pause') return; $('info').hidden=true; $('pause').hidden=true; closeBoard(); state='end'; if(aim) finishAim(false); atkAim=null;
   const win=winTeam===0;
   $('endT').textContent=win?'Победа':'Поражение'; $('endT').className=win?'win':'lose';
   $('endS').textContent=`${win?'Трон врага разрушен':'Ваш Трон разрушен'} · убийства ${score[0]} : ${score[1]} · уровень ${player.level} · убийства ${player.kills}, смерти ${player.deaths}`;
   $('end').hidden=false;
 }
-function toMenu(){ clearMatch(); player=null; state='menu'; $('end').hidden=true; $('hud').hidden=true; $('menu').hidden=false; }
+function toMenu(){ clearMatch(); closeBoard(); player=null; state='menu'; $('end').hidden=true; $('hud').hidden=true; $('menu').hidden=false; }
 $('start').addEventListener('click',startMatch);
 $('again').addEventListener('click',startMatch);
 $('toMenu').addEventListener('click',toMenu);
