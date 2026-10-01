@@ -86,7 +86,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 .sk svg{width:50%;height:50%;filter:drop-shadow(0 1px 1px rgba(0,0,0,.6))}
 .sk .cd{position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(3,7,7,.8) calc(var(--p,0) * 1turn),transparent 0)}
 .sk .n{position:absolute;inset:0;display:grid;place-items:center;font:20px var(--display);color:#fff;text-shadow:0 2px 3px #000}
-.sk .k{position:absolute;top:-5px;left:-5px;font:11px var(--display);font-style:normal;color:#fff;background:#000c;border-radius:4px;padding:1px 4px}
+
 .sk .mc{position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);font:700 10px var(--body);font-style:normal;background:#173a7a;color:#d6e4ff;border-radius:6px;padding:0 5px;border:1px solid #0b1110}
 .sk.ult{width:70px;height:70px;border-color:#7a5a12;box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(243,193,75,.55),0 0 18px -4px rgba(243,193,75,.5)}
 .sk.item{width:46px;height:46px}
@@ -104,7 +104,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 .apad svg{position:absolute;right:24px;bottom:24px;width:46px;height:46px;color:#fff3ea;filter:drop-shadow(0 2px 2px rgba(0,0,0,.55))}
 .apad .cd{position:absolute;inset:0;background:conic-gradient(from 270deg at 100% 100%,rgba(20,4,2,.5) calc(var(--p,0) * 90deg),transparent 0)}
 .apad.aim{scale:1.04;filter:brightness(1.22)}
-.apad .k{position:absolute;right:8px;bottom:8px;font:11px var(--display);font-style:normal;color:#fff;background:#000c;border-radius:4px;padding:1px 4px}
+
 /* two small attack buttons: structures only (above the sector) and creeps only (beside it) */
 .amini{position:absolute;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;pointer-events:auto;touch-action:none;cursor:pointer;border:2px solid #0b1110;
   box-shadow:0 3px 0 rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.16);transition:scale .16s ease-out,box-shadow .16s ease-out}
@@ -112,7 +112,7 @@ body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-c
 .amini.build{background:linear-gradient(#f6d47c,#b9822a);color:#3a2606}
 .amini.creep{background:linear-gradient(#9be276,#3f8a3a);color:#0f2a10}
 .amini.aim{scale:1.06;box-shadow:0 0 0 3px #fff,0 0 18px 3px rgba(255,255,255,.65)}
-.amini .k{position:absolute;top:-6px;left:-6px;font:11px var(--display);font-style:normal;color:#fff;background:#000c;border-radius:4px;padding:1px 4px}
+
 #cancel{position:absolute;right:calc(250px + env(safe-area-inset-right,0px));bottom:calc(140px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:rgba(40,8,12,.75);border:2px solid #6b2430;color:#ff8b98;font:11px var(--display);text-transform:uppercase}
 #cancel.hot{background:#b3263a;color:#fff;border-color:#ff8b98}
 #stick{position:absolute;left:0;top:0;width:116px;height:116px;margin:-58px 0 0 -58px;border-radius:50%;border:2px solid rgba(255,255,255,.25);background:rgba(10,20,18,.35);opacity:.45;transition:opacity .15s}
@@ -420,7 +420,7 @@ function buildMenu(){
   const goal='<b>Цель</b> — разрушить вражеский Трон в правом верхнем углу карты. К нему ведут 3 линии, на каждой по 3 башни: их ломают по очереди, от дальней к ближней. За третьей башней на холме базы стоят два барака этой линии. Трон становится уязвим, когда пал хотя бы один барак. Если разрушить оба барака линии, твои волны на ней получают усиленного крипа.<br>Башни, бараки и Трон можно бить только обычной атакой. Под башни заходи вместе со своими крипами.<br><b>Лес</b>: лагеря крипов по обе стороны реки дают опыт. <b>Руны</b> появляются на реке каждые 60 секунд: скорость, урон, лечение или щит — просто подойди. <b>Босс Глыбозуб</b> живёт в пещере в левом верхнем углу: он даёт всей команде много опыта и лечение.';
   $('ctrl').innerHTML = (isTouch
     ? '<b>Левый палец</b> — джойстик движения в любом месте левой части экрана.<br><b>Большая красная кнопка в углу</b> — атака: держи, и герой бьёт ближайшего врага (герои важнее крипов). Если враг чуть дальше — герой сам подбежит.<br><b>Жёлтая кнопка над ней</b> — бить только башни, бараки и Трон. <b>Зелёная кнопка рядом</b> — бить только крипов.<br><b>Способности</b>: тап — автоприцел, потяни — ручной прицел, отпусти над «Отмена» — отменить.<br>Кнопка <b>i</b> — пауза и описание урона. Кусты прячут от врагов.<br>'
-    : '<b>Клик по земле</b> (можно зажать) или стрелки — идти, <b>S</b> — стоп.<br><b>Пробел или A</b> — атака (держи), мышью выбираешь, в какую сторону бить. Если враг чуть дальше — герой сам подбежит.<br><b>X</b> — бить только башни, бараки и Трон. <b>C</b> — бить только крипов.<br><b>Q W E R</b> — зажми, наведи мышью, отпусти. <b>F</b> — флакон. <b>Esc</b> — пауза.<br>Кусты прячут от врагов.<br>')+goal;
+    : '<b>Клик по земле</b> (можно зажать) или стрелки — идти, <b>S</b> — стоп.<br><b>Пробел или A</b> — атака (держи), мышью выбираешь, в какую сторону бить. Если враг чуть дальше — герой сам подбежит.<br><b>X</b> — бить только башни, бараки и Трон. <b>C</b> — бить только крипов.<br><b>Q W E R</b> (кнопки способностей слева направо) — зажми, наведи мышью, отпусти. <b>F</b> — флакон. <b>Esc</b> — пауза.<br>Кусты прячут от врагов.<br>')+goal;
   $('howBtn').addEventListener('click',()=>{ $('how').hidden=false; });
   $('howClose').addEventListener('click',()=>{ $('how').hidden=true; });
 }
@@ -767,7 +767,7 @@ function buildArena(){
   for(const b of BUSHES){
     const mat=toon(0x2f7d3b); mat.transparent=true;
     const n=Math.round(b.w*b.d*1.1), im=new T.InstancedMesh(ico,mat,n), by=groundH(b.x,b.z); im.position.set(b.x,by,b.z);
-    for(let i=0;i<n;i++){ const s=rand(.5,.75), x=rand(-b.w/2+.35,b.w/2-.35), z=rand(-b.d/2+.35,b.d/2-.35); dummy.position.set(x,groundH(b.x+x,b.z+z)-by+.42,z); dummy.rotation.set(rand(0,3),rand(0,3),0); dummy.scale.set(s,s*.85,s); dummy.updateMatrix(); im.setMatrixAt(i,dummy.matrix);
+    for(let i=0;i<n;i++){ const s=rand(.5,.75), x=rand(-b.w/2+.35,b.w/2-.35), z=rand(-b.d/2+.35,b.d/2-.35); dummy.position.set(x,groundH(b.x+x,b.z+z)-by+.56,z); dummy.rotation.set(0,rand(0,3),0); dummy.scale.set(s,s*1.2,s); dummy.updateMatrix(); im.setMatrixAt(i,dummy.matrix);
       col.setHex(0x2f7d3b).offsetHSL(rand(-.02,.02),0,rand(-.06,.05)); im.setColorAt(i,col); }
     im.receiveShadow=true; scene.add(im); bushObjs.push({b,mat});
   }
@@ -1167,6 +1167,9 @@ function finishUnit(u,ringColor,barColor,label,creep){
   const stCls=creep==='tw'||creep==='bk'?creep:'', tw=!!stCls; if(tw) creep=false;
   if(!creep&&!tw){   // heroes: a rune aura under the feet and a shield bubble
     u.aura=new T.Mesh(GEO.ring,addMat(0xffffff,.8)); u.aura.rotation.x=-Math.PI/2; u.aura.position.y=.09; u.aura.scale.setScalar(u.radius+.85); u.aura.visible=false; u.obj.add(u.aura);
+    // parts that fade when the hero hides in a bush (the shared ink outline is switched off instead)
+    u.fade=1; u.fadeMats=[]; u.outlines=[];
+    u.rig.root.traverse(c=>{ if(!c.material) return; if(c.material===OUTLINE){ u.outlines.push(c); return; } const m=c.material; if(m.blending!==T.AdditiveBlending&&!m.transparent&&!u.fadeMats.includes(m)) u.fadeMats.push(m); });
     u.shieldM=new T.Mesh(GEO.sph,addMat(RUNES.shield.color,.2)); u.shieldM.scale.setScalar(u.radius*2.3); u.shieldM.position.y=u.rig.headY*.5; u.shieldM.visible=false; u.obj.add(u.shieldM); }
   const el=document.createElement('div'); el.className='ub'+(creep?' cr':'')+(tw?' '+stCls:'');
   el.style.setProperty('--c',barColor); el.style.setProperty('--tick',((creep?46:64)*100/u.maxHp)+'px');
@@ -1861,6 +1864,10 @@ function syncUnit(u,dt,t){
   u.obj.visible = u.team===0 || !u.alive || !hiddenFrom(u,0);
   u.stars.visible=u.alive&&u.stun>0; u.stars.rotation.y+=dt*5;
   u.ampMark.visible=u.alive&&u.ampT>0; if(u.ampMark.visible){ u.ampMark.position.y=u.rig.headY+.6+Math.sin(t*6)*.08; u.ampMark.rotation.y+=dt*3; }
+  if(u.fadeMats){ const want=u.alive&&u.inBush?.5:1;
+    if(u.fade!==want){ u.fade+=(want-u.fade)*Math.min(1,dt*7); if(Math.abs(u.fade-want)<.01) u.fade=want; const solid=u.fade>=1;
+      for(const m of u.fadeMats){ if(m.transparent===solid){ m.transparent=!solid; m.needsUpdate=true; } m.opacity=u.fade; }
+      for(const o of u.outlines) o.visible=solid; } }
   if(u.aura){ const c=!u.alive?null:u.shieldT>0?RUNES.shield:u.dmgT>0?RUNES.dmg:u.hasteT>0?RUNES.haste:null; u.aura.visible=!!c;
     if(c){ u.aura.material.color.setHex(c.color); u.aura.rotation.z+=dt*2; u.aura.material.opacity=.6+.3*Math.sin(t*6); }
     u.shieldM.visible=u.alive&&u.shieldT>0; if(u.shieldM.visible) u.shieldM.material.opacity=.16+.07*Math.sin(t*5); }
@@ -1964,21 +1971,21 @@ function buildSkills(){
   const place=(el,[r,b])=>{ el.style.right=r+'px'; el.style.bottom=b+'px'; el.style.translate='50% 50%'; };
   d.abilities.forEach((ab,i)=>{
     const el=document.createElement('button'); el.className='sk'+(ab.ult?' ult':''); el.setAttribute('aria-label',ab.name); el.style.cssText=style; place(el,C[i]);
-    el.innerHTML=`${svg(ab.type)}<span class="cd"></span><span class="n"></span><i class="k">${KEYS[i]}</i><em class="mc">${ab.mana}</em>`;
+    el.innerHTML=`${svg(ab.type)}<span class="cd"></span><span class="n"></span><em class="mc">${ab.mana}</em>`;
     hookButton(el,i); box.appendChild(el);
     btns.push({el,cd:el.querySelector('.cd'),n:el.querySelector('.n'),prev:0,lastP:-1,lastN:''});
   });
   const it=document.createElement('button'); it.className='sk item'; it.setAttribute('aria-label',ITEM.name);
   it.style.cssText='--c1:#163a2a;--c2:#2f7a54;--g:#a6ffc4'; place(it,C.item);
-  it.innerHTML=`${svg('flask')}<span class="cd"></span><span class="n"></span><i class="k">F</i>`;
+  it.innerHTML=`${svg('flask')}<span class="cd"></span><span class="n"></span>`;
   it.addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); if(state==='play'&&!useItem(player)) deny(4); });
   box.appendChild(it); btns.push({el:it,cd:it.querySelector('.cd'),n:it.querySelector('.n'),prev:0,lastP:-1,lastN:''});
   const at=document.createElement('div'); at.className='apad'; at.setAttribute('role','button'); at.setAttribute('aria-label','Атака');
-  at.innerHTML=`<span class="cd"></span>${svg('sword')}${isTouch?'':'<i class="k">␣</i>'}`;
+  at.innerHTML=`<span class="cd"></span>${svg('sword')}`;
   hookAttack(at,'any'); box.appendChild(at); atkBtn={el:at,cd:at.querySelector('.cd'),lastP:-1};
-  atkMinis=[['build','tower','Бить только башни, бараки и Трон','X'],['creep','creep','Бить только крипов','C']].map(([mode,icon,label,key])=>{
+  atkMinis=[['build','tower','Бить только башни, бараки и Трон','X'],['creep','creep','Бить только крипов','C']].map(([mode,icon,label])=>{
     const b=document.createElement('div'); b.className='amini '+mode; b.setAttribute('role','button'); b.setAttribute('aria-label',label); place(b,C[mode]);
-    b.innerHTML=svg(icon)+(isTouch?'':`<i class="k">${key}</i>`); hookAttack(b,mode); box.appendChild(b); return b; });
+    b.innerHTML=svg(icon); hookAttack(b,mode); box.appendChild(b); return b; });
 }
 // every attack button works only while it is held; the mode decides which enemies count as targets
 function hookAttack(el,mode){
