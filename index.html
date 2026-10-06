@@ -830,7 +830,17 @@ function waterCanvas(){
   return c;
 }
 // instanced scenery is split into map chunks so that everything outside the view is culled
-const CHUNK=32;
+const CHUNK=32, chunkMeshes=[];
+// the camera always looks at the ground from the same angle, so what it can see is a known rectangle around its target.
+// A sphere test (what three.js does) lets through about twice as many chunks as this simple rectangle test.
+function cullChunks(all){
+  // the visible ground is a trapezoid: about 12.5 x aspect half-width at the bottom of the screen, 22 x aspect at the top
+  const asp=Math.max(innerWidth/innerHeight,1), cx=camTarget.x, cz=camTarget.z, zf=cz-21*cullF-5, zn=cz+12*cullF+5;
+  for(const m of chunkMeshes){ const b=m.userData.box, p=m.userData.pad;
+    if(m.userData.off){ m.visible=false; continue; } if(all){ m.visible=true; continue; }
+    const zz=Math.max(b[1],zf-p*2.2), hw=(12.5+clamp((10*cullF-(zz-cz))/(27*cullF),0,1.25)*9.5)*asp*cullF+5+p;
+    m.visible=b[2]>cx-hw&&b[0]<cx+hw&&b[3]>zf-p*2.2&&b[1]<zn+p; }
+}
 function instChunks(geo,mat,items,place,o={}){
   geo.boundingSphere=new T.Sphere(new T.Vector3(0,2,0),CHUNK*.75+(o.pad||5));
   const groups=new Map(), out=[], dummy=new T.Object3D(), col=new T.Color();
@@ -839,6 +849,9 @@ function instChunks(geo,mat,items,place,o={}){
     const m=new T.InstancedMesh(geo,mat,a.length); m.position.set(cx,0,cz);
     a.forEach((it,n)=>{ dummy.rotation.set(0,0,0); dummy.scale.set(1,1,1); place(dummy,it,col); dummy.position.x-=cx; dummy.position.z-=cz; dummy.updateMatrix(); m.setMatrixAt(n,dummy.matrix); if(o.color) m.setColorAt(n,col); });
     m.frustumCulled=true;   // off by default for instanced meshes in this three.js; the chunk sphere above makes it safe
+    // the ground rectangle this chunk really covers: the frame loop hides chunks that are outside the camera's view rectangle
+    { let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9; for(const it of a){ x0=Math.min(x0,it.x); x1=Math.max(x1,it.x); z0=Math.min(z0,it.z); z1=Math.max(z1,it.z); }
+      m.userData.box=[x0,z0,x1,z1]; m.userData.pad=o.pad||0; chunkMeshes.push(m); }
     m.castShadow=!!o.cast; m.receiveShadow=!!o.recv; scene.add(m); out.push(m); }
   return out;
 }
@@ -970,6 +983,7 @@ function buildArena(){
     const n=Math.round(b.w*b.d*1.1), im=new T.InstancedMesh(ico,mat,n), by=groundH(b.x,b.z); im.position.set(b.x,by,b.z);
     for(let i=0;i<n;i++){ const s=rand(.5,.75), x=rand(-b.w/2+.35,b.w/2-.35), z=rand(-b.d/2+.35,b.d/2-.35); dummy.position.set(x,groundH(b.x+x,b.z+z)-by+.56,z); dummy.rotation.set(0,rand(0,3),0); dummy.scale.set(s,s*1.2,s); dummy.updateMatrix(); im.setMatrixAt(i,dummy.matrix);
       col.setHex(base).offsetHSL(rand(-.02,.02),0,rand(-.06,.05)); im.setColorAt(i,col); }
+    im.userData.box=[b.x-b.w/2,b.z-b.d/2,b.x+b.w/2,b.z+b.d/2]; im.userData.pad=1; chunkMeshes.push(im);
     im.receiveShadow=true; scene.add(im); bushObjs.push({b,mat});
   }
   // camps: the aggro ring, a circle of stones and a small fire
@@ -1402,14 +1416,14 @@ function mergeGeos(items){
 // plain single-colour materials can be glued together even when their colours differ: the colour moves into the vertices
 function plainKind(mt){
   if(!mt||mt.userData.keep||mt.transparent||mt.map||mt.side!==T.FrontSide||mt.blending!==T.NormalBlending||mt.vertexColors) return null;
-  if(mt.isMeshToonMaterial) return (mt.emissive&&mt.emissive.getHex()!==0)?null:'T';
-  if(mt.isMeshBasicMaterial) return 'B';
+  if(mt.isMeshToonMaterial) return (mt.emissive&&mt.emissive.getHex()!==0)?null:mt.flatShading?'TF':'T';   // faceted and smooth parts must not share a material
+  if(mt.isMeshBasicMaterial) return mt.toneMapped?'Bt':'B';   // glowing parts skip tone mapping: keep them apart from ordinary ones
   return null;
 }
 function mergeParts(root,skip){
   // skip: set of objects that must stay as they are (they move, or the model code keeps a reference to them)
   const objs=[]; root.traverse(o=>objs.push(o)); let saved=0; const vcMats={};
-  const vcMat=(kind,tpl)=>vcMats[kind]||(vcMats[kind]=(()=>{ const m=kind==='T'?new T.MeshToonMaterial({gradientMap:tpl.gradientMap,vertexColors:true}):new T.MeshBasicMaterial({vertexColors:true}); if(tpl.onBeforeCompile) m.onBeforeCompile=tpl.onBeforeCompile; return m; })());
+  const vcMat=(kind,tpl)=>vcMats[kind]||(vcMats[kind]=(()=>{ const m=kind[0]!=='B'?new T.MeshToonMaterial({gradientMap:tpl.gradientMap,vertexColors:true}):new T.MeshBasicMaterial({vertexColors:true,toneMapped:tpl.toneMapped}); if(kind==='TF') m.flatShading=true; if(tpl.onBeforeCompile) m.onBeforeCompile=tpl.onBeforeCompile; return m; })());
   for(const p of objs){
     const groups=new Map(), gone=[];
     const grp=(key,mat,kind)=>{ let g=groups.get(key); if(!g){ g={mat,kind,cast:false,items:[]}; groups.set(key,g); } return g; };
@@ -1459,12 +1473,35 @@ function mergeRig(u){
   for(const [m,v,op,hex] of matState){ m.visible=v; m.opacity=op; if(hex!=null) m.color.setHex(hex); }   // the probe must leave no trace on the materials either
   return ok?mergeParts(root,skip):0;
 }
+// shared ring shapes (by radius) and materials (by colour) for heroes and structures
+const ringGeos={}, ringMats={};
+function ringGeo(r){ const k=r.toFixed(2); if(!ringGeos[k]){ ringGeos[k]=new T.RingGeometry(r+.05,r+.2,28); ringGeos[k].userData.shared=true; } return ringGeos[k]; }
+function ringMat(c){ if(!ringMats[c]){ ringMats[c]=new T.MeshBasicMaterial({color:c,transparent:true,opacity:.9,depthWrite:false}); ringMats[c].userData.shared=true; } return ringMats[c]; }
+// minion rings and the round blob shadows are drawn with two instanced meshes for the whole map (two draw calls in total)
+const RING_MAX=320, ringD=new T.Object3D();
+const ringInst=(()=>{ const g=new T.RingGeometry(.8,1,24); g.rotateX(-Math.PI/2); const m=new T.InstancedMesh(g,new T.MeshBasicMaterial({transparent:true,opacity:.55,depthWrite:false}),RING_MAX);
+  m.setColorAt(0,new T.Color(1,1,1)); m.count=0; m.frustumCulled=false; m.matrixAutoUpdate=false; scene.add(m); return m; })();
+const blobInst=(()=>{ const g=new T.CircleGeometry(1,16); g.rotateX(-Math.PI/2); const m=new T.InstancedMesh(g,new T.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.3,depthWrite:false}),RING_MAX);
+  m.count=0; m.frustumCulled=false; m.matrixAutoUpdate=false; m.renderOrder=-1; scene.add(m); return m; })();
+function updateRings(){
+  let n=0, b=0;
+  for(const u of units){ if(u.isTower||u.culled||!u.obj.visible) continue; const p=u.obj.position;
+    if(u.ringC&&n<RING_MAX){ ringD.position.set(p.x,p.y+.05,p.z); ringD.scale.setScalar(u.radius+.2); ringD.updateMatrix(); ringInst.setMatrixAt(n,ringD.matrix); ringInst.setColorAt(n,u.ringC); n++; }
+    // a soft dark spot instead of a real shadow: minions below high quality, heroes when shadows are off
+    if(u.alive&&b<RING_MAX&&(u.isCreep?qLevel<3:qLevel<2)){ ringD.position.set(p.x,groundH(p.x,p.z)+.03,p.z); ringD.scale.setScalar(u.radius*1.25); ringD.updateMatrix(); blobInst.setMatrixAt(b,ringD.matrix); b++; } }
+  ringInst.count=n; blobInst.count=b;
+  if(n){ ringInst.instanceMatrix.needsUpdate=true; ringInst.instanceColor.needsUpdate=true; } if(b) blobInst.instanceMatrix.needsUpdate=true;
+}
+// real shadows are cast by heroes and structures; minions cast them on high quality only
+function unitShadows(u){ const on=!u.isCreep||qLevel===3; u.rig.root.traverse(c=>{ if(c.isMesh&&c.userData.cs!=null) c.castShadow=c.userData.cs&&on; }); }
 function finishUnit(u,ringColor,barColor,label,creep){
   u.merged=mergeRig(u);
   u.rig.root.scale.setScalar(u.S); u.rig.headY*=u.S;
   u.obj=new T.Group(); u.obj.add(u.rig.root);
-  const ring=new T.Mesh(new T.RingGeometry(u.radius+.05,u.radius+.2,28), new T.MeshBasicMaterial({color:ringColor,transparent:true,opacity:creep?.55:.9,depthWrite:false}));
-  ring.rotation.x=-Math.PI/2; ring.position.y=.05; u.obj.add(ring);
+  // team ring under the unit: heroes and structures share ring shapes and materials; all minion rings are one instanced mesh (see updateRings)
+  if(creep===true) u.ringC=new T.Color(ringColor);
+  else { const ring=new T.Mesh(ringGeo(u.radius),ringMat(ringColor)); ring.rotation.x=-Math.PI/2; ring.position.y=.05; u.obj.add(ring); }
+  u.rig.root.traverse(c=>{ if(c.isMesh) c.userData.cs=c.castShadow; }); unitShadows(u);
   u.stars=makeStars(); u.stars.position.y=u.rig.headY+.25;   // stun stars and the amp marker hang in the model only while they are shown (hundreds of hidden objects cost matrix work every frame)
   u.ampMark=new T.Mesh(GEO.cone,basic(0xb04cff)); u.ampMark.scale.set(.14,-.25,.14); u.ampMark.position.y=u.rig.headY+.6; u.ampMark.visible=false;
   scene.add(u.obj);
@@ -1512,11 +1549,15 @@ function spawnStructure(sd,team){
   finishUnit(u,TEAMC[team],team?'#ff5468':'#45e28f','',bk?'bk':'tw');
   towers.push(u); return u;
 }
+// a lane that already holds a crowd of one team's soldiers gets no new wave for that team (they pile up at a tower in long
+// matches); the super soldier of a broken barrack always comes
+const LANE_CAP=14;
 function spawnWave(){
   const mul=1+matchTime/380, dmul=1+matchTime/480;
   for(const team of [0,1]) for(const k of LANE_KEYS){
+    let crowd=0; for(const o of units) if(o.isLane&&o.alive&&o.team===team&&o.lane===k) crowd++;
     const L=team?LANES[k].slice().reverse():LANES[k], s=L[0], n=L[1], dx=n.x-s.x, dz=n.z-s.z, len=Math.hypot(dx,dz);
-    const kinds=['melee','melee','melee','ranged']; if(superLane[team][k]) kinds.push('super');
+    const kinds=crowd>=LANE_CAP?[]:['melee','melee','melee','ranged']; if(superLane[team][k]) kinds.push('super');
     kinds.forEach((kind,i)=>{
       const b=LANE_CREEP[kind], d=Object.assign({},b,{team,hp:Math.round(b.hp*mul),atk:Object.assign({},b.atk,{dmg:b.atk.dmg*dmul}),glow:TEAMC[team]});
       const u=makeUnit(d,team); u.isCreep=true; u.isLane=true; u.lane=k; u.path=L; u.wp=1; u.hid='soldier'; u.S=kind==='super'?1.8:1.25; u.isSuper=kind==='super'; u.off={x:rand(-1.3,1.3),z:rand(-1.3,1.3)};
@@ -2597,8 +2638,8 @@ function setQuality(q){
   if(Q.shadow&&sun.shadow.mapSize.x!==Q.shadow){ sun.shadow.mapSize.set(Q.shadow,Q.shadow); if(sun.shadow.map){ sun.shadow.map.dispose(); sun.shadow.map=null; } }
   OUTLINE.visible=q===3||(!isTouch&&q===2);
   treeMeshes.forEach(m=>{ m.castShadow=q===3; });   // the forest is the heaviest thing in the shadow pass
-  lowDetail.forEach(m=>{ m.visible=q>0; }); FF.pts.visible=q>1; caveLight.intensity=q>2?1.5:0;
-
+  lowDetail.forEach(m=>{ m.userData.off=q===0; m.visible=q>0; }); FF.pts.visible=q>1; caveLight.intensity=q>2?1.5:0;
+  for(const u of units) unitShadows(u);
 }
 function adaptQuality(raw){
   if(gfxPick!=='auto') return;
@@ -2634,6 +2675,7 @@ function frame(now){
   else { menuCam(); animateWorld(dt); }
   camera.updateMatrixWorld();
   if(state!=='menu') updateBars();
+  updateRings(); cullChunks(state==='menu'||!!dbgCam);
   renderer.shadowMap.needsUpdate=qLevel===3||frameN%2===0;
   renderer.render(scene,camera);
   if(DBG) dbgTick(raw,performance.now()-w0);
@@ -2689,10 +2731,10 @@ window.__arena={mergeSet(v){ mergeOn=v; },animateRig,spawnStructure,spawnWave,TO
     A.ai.pro=proA; player=A; const st=state; state='play'; let t=0; while(A.alive&&B.alive&&t<90){ simStep(1/30); t+=1/30; }
     const res={w:A.alive===B.alive?-1:A.alive?0:1,t:+t.toFixed(1),hp:[+(A.hp/A.maxHp).toFixed(2),+(B.hp/B.maxHp).toFixed(2)]};
     clearMatch(); player=null; duelMode=null; botPlayer=false; state=st==='play'?'menu':st; return res; },quality(q){ setQuality(q); qFirst=false; perfSkip=1e9; },
-  tick(dt=1/60){ time+=dt; frameN++; update(dt); camera.updateMatrixWorld(); updateBars(); renderer.shadowMap.needsUpdate=true; renderer.render(scene,camera); return {calls:renderer.info.render.calls,tris:renderer.info.render.triangles}; },get q(){return qLevel;},bot(v){ botPlayer=v; },view(v){ dbgCam=v; },
+  tick(dt=1/60){ time+=dt; frameN++; update(dt); camera.updateMatrixWorld(); updateBars(); updateRings(); cullChunks(!!dbgCam); renderer.shadowMap.needsUpdate=true; renderer.render(scene,camera); return {calls:renderer.info.render.calls,tris:renderer.info.render.triangles}; },get q(){return qLevel;},bot(v){ botPlayer=v; },view(v){ dbgCam=v; },
   // timing of one frame split into its parts (milliseconds, averaged); used by the performance checks
   parts(n=30,dt=1/60){ const o={update:0,matrices:0,bars:0,render:0}; for(let i=0;i<n;i++){ time+=dt; frameN++; let t=performance.now(); update(dt); o.update+=performance.now()-t;
-      t=performance.now(); camera.updateMatrixWorld(); scene.updateMatrixWorld(); o.matrices+=performance.now()-t; t=performance.now(); updateBars(); o.bars+=performance.now()-t;
+      t=performance.now(); camera.updateMatrixWorld(); scene.updateMatrixWorld(); o.matrices+=performance.now()-t; t=performance.now(); updateBars(); updateRings(); cullChunks(!!dbgCam); o.bars+=performance.now()-t;
       t=performance.now(); renderer.shadowMap.needsUpdate=true; renderer.render(scene,camera); o.render+=performance.now()-t; }
     for(const k in o) o[k]=+(o[k]/n).toFixed(2); return o; }};
 requestAnimationFrame(frame);
